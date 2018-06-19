@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+      <head th:include="system/index/top :: top">
+
+	  </head>
+
+<body class="no-skin">
+	<div class="main-container" id="main-container">
+		<!-- /section:basics/sidebar -->
+		<div class="main-content">
+			<div class="main-content-inner">
+				<div class="page-content">
+					<div class="row">
+						<div class="col-xs-12">
+							<div th:unless="${menuList}">helloworld</div>
+							<table id="dynamic-table" class="table table-striped table-bordered table-hover">
+								<thead>
+									<tr>
+										<th class="center" style="width: 50px;">序号</th>
+										<th class='center'>名称</th>
+										<th class='center'>资源路径</th>
+										<th class='center' style="width: 50px;">状态</th>
+										<th class='center' style="width: 120px;">操作</th>
+									</tr>
+								</thead>
+
+								<tbody>
+									<tr th:each="menu,menuStat : ${menuList}">
+										<td class='center' th:text="${menuStat.count}"></td>
+										
+										<td class='center'>
+											<i th:attr="class=${menu.menuIcon}">&nbsp;</i>
+											<a href="javascript:void()" th:onclick="${'goSonmenu(''' + menu.id + ''')'}" th:text="${menu.name}"></a>
+											&nbsp;
+											<span class="label label-success arrowed" th:if="${menu.menuType != null and !menu.menuType}">系统</span>
+											<span class="label label-important arrowed-in" th:if="${menu.menuType != null and menu.menuType}">业务</span>
+										</td>
+										<td th:text="${menu.url == '#' ? '' : menu.url }"></td>
+										<td class='center'>
+											<i th:class="${menu.available} ? 'ace-icon fa fa-eye' : 'ace-icon fa fa-eye-slash'"></i>
+										</td>
+										<td class='center'>
+											<span th:if="${true != crudButtonPermission.get('update') and true != crudButtonPermission.get('delete')}"
+											 	class="label label-large label-grey arrowed-in-right arrowed-in">
+												<i class="ace-icon fa fa-lock" title="无权限"></i>
+											</span>
+											<div class="hidden-sm hidden-xs action-buttons">
+												<a th:if="${crudButtonPermission.get('update')}" class="blue"
+													th:onclick="${'editTb(''' + menu.id + ''')'}"
+													href="javascript:void()"> 
+													<i class="ace-icon glyphicon glyphicon-picture bigger-130" title="编辑图标"></i>
+												</a> 
+												<a th:if="${crudButtonPermission.get('update')}" class="green"
+													th:onclick="${'editmenu(''' + menu.id + ''')'}"
+													href="javascript:void()">
+													<i class="ace-icon fa fa-pencil-square-o bigger-130" title="修改"></i>
+												</a>
+												<a th:if="${crudButtonPermission.get('delete')}" class="red" 
+													th:onclick="${'delmenu(''' + menu.id + ''')'}"
+													href="javascript:void()"
+													>
+													<i class="ace-icon fa fa-trash-o bigger-130" title="删除"></i>
+												</a>
+											</div>
+											<div class="hidden-md hidden-lg">
+												<div class="inline pos-rel">
+													<button
+														class="btn btn-minier btn-yellow dropdown-toggle"
+														data-toggle="dropdown" data-position="auto">
+														<i
+															class="ace-icon fa fa-caret-down icon-only bigger-120"></i>
+													</button>
+
+													<ul class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close">
+														<li th:if="${crudButtonPermission.get('update')}">
+															<a th:onclick="${'editTb(''' + menu.id + ''')'}" 
+																href="javascript:void()"
+																class="tooltip-info" data-rel="tooltip" title="View">
+																<span class="blue">
+																	<i class="ace-icon glyphicon glyphicon-picture bigger-120" title="编辑图标"></i>
+																</span>
+															</a>
+														</li>
+														<li th:if="${crudButtonPermission.get('update')}">
+															<a 
+																th:onclick="${'editmenu(''' + menu.id + ''')'}"
+																href="javascript:void()" class="tooltip-success" data-rel="tooltip" title="Edit">
+																<span class="green">
+																	<i class="ace-icon fa fa-pencil-square-o bigger-120" title="修改"></i>
+																</span>
+															</a>
+														</li>
+														<li th:if="${crudButtonPermission.get('delete')}">
+															<a
+															 th:onclick="${'delmenu(''' + menu.id + ''')'}"
+															 href="javascript:void()" class="tooltip-error" data-rel="tooltip" title="Delete">
+																<span class="red"> <i class="ace-icon fa fa-trash-o bigger-120"  title="删除"></i>
+																</span>
+															</a>
+														</li>
+													</ul>
+												</div>
+											</div>
+										</td>
+									</tr>
+									<tr th:if="${menuList == null || menuList.size() == 0}">
+										<td colspan="100" class='center'>没有相关数据</td>
+									</tr>
+								</tbody>
+							</table>
+							
+							<div>
+								&nbsp;&nbsp;
+								<a class="btn btn-sm btn-success" th:onclick="${'addmenu(''' + pd.get('parentId') + ''')'}">新增</a>
+								<a th:if="${pd.get('parentIdSparentId') != null}" class="btn btn-sm btn-success" th:onclick="${'goSonmenu(''' + pd.get('parentIdSparentId') + ''')'}">返回</a>
+							</div>
+							
+						</div>
+					</div>
+					
+				
+				</div>
+			</div>
+		</div>
+		<!-- 返回顶部 -->
+		<a href="#" id="btn-scroll-up"
+			class="btn-scroll-up btn btn-sm btn-inverse">dfsa <i
+			class="ace-icon fa fa-angle-double-up icon-only bigger-110"></i>
+		</a>
+	</div>
+	<div th:include="system/index/foot :: foot">
+	</div>
+	<!-- 删除时确认窗口 -->
+	<script th:src="@{/plugins/ace/js/bootbox.js}"></script>
+	<!-- ace scripts -->
+	<script th:src="@{/plugins/ace/js/ace/ace.js}"></script>
+	<!-- inline scripts related to this page -->
+	<script type="text/javascript" th:inline="javascript">
+	/*<![CDATA[*/
+		$(document).ready(function(){
+			top.hangge();
+		});	
+		//去此ID下子菜单列表
+		function goSonmenu(menu_id){
+			top.jzts();
+			window.location.href=[[@{/}]]  + "menu.do?menu_id="+menu_id;
+		};
+		
+		//新增菜单
+		function addmenu(menu_id){
+			top.jzts();
+			window.location.href=[[@{/}]]  +  "menu/toAdd.do?menu_id="+menu_id;
+		};
+		//编辑菜单
+		function editmenu(menu_id){
+			top.jzts();
+			window.location.href=[[@{/}]] + "menu/toUpdate.do?id="+menu_id;
+		};
+		
+		//删除
+		function delmenu(menu_id){
+			bootbox.confirm("确定要删除此菜单吗?", function(result) {
+				if(result) {
+					var url = [[@{/}]] + "menu/delete.do?id="+menu_id;
+					top.jzts();
+					$.get(url,function(data){
+						debugger;
+						if(data.success){
+							parent.location.href=[[@{/}]] + "menu/listAllMenu.do?menu_id="+[[${pd.parentId}]];
+						}else{
+							top.hangge();
+							bootbox.dialog({
+								message: "<span class='bigger-110'>删除失败,请先删除子菜单!</span>",
+								buttons: 			
+								{
+									"button" :
+									{
+										"label" : "确定",
+										"className" : "btn-sm btn-success"
+									}
+								}
+							});
+						}						
+					});
+				}
+			});
+		}
+		
+		//编辑菜单图标
+		function editTb(MENU_ID){
+			 top.jzts();
+		   	 var diag = new top.Dialog();
+			 diag.Drag=true;
+			 diag.Title ="编辑图标";
+			 diag.URL = 'menu/toEditicon.do?MENU_ID='+MENU_ID;
+			 diag.Width = 800;
+			 diag.Height = 380;
+			 diag.CancelEvent = function(){ //关闭事件
+				if(diag.innerFrame.contentWindow.document.getElementById('zhongxin').style.display == 'none'){
+					top.jzts(); 
+					setTimeout("location.reload()",100);
+				}
+				diag.close();
+			 };
+			 diag.show();
+		}
+	
+	/*]]>*/
+	</script>
+	
+</body>
+
+
+</html>

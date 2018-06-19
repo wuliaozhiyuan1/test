@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<!DOCTYPE mapper  
+       PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+       "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+<mapper namespace="com.wuliaozhiyuan.mapper.system.CompanyMapper">  
+
+	<!--表名 -->
+	<sql id="tableName">
+		company
+	</sql>
+     
+    <!--用于构造company树，通过父companyId，查子company -->  
+    <select id="listCompanyByParentId" parameterType="pageData" resultType="com.wuliaozhiyuan.bean.system.Company">  
+       SELECT t.id,
+        t.companyName,
+        t.parentId,
+        t.isParent 
+        FROM company t 
+        WHERE t.parentid = #{parentId} order by t.sortCode;
+	</select>  
+	
+    <!--通过传入的参数，包括父company -->  
+    <select id="companyListPage" parameterType="page" resultType="com.wuliaozhiyuan.bean.system.Company">  
+    	SELECT * FROM `company` WHERE 1 = 1
+    	<if test="pd.companyTypeCode != null" >
+			and companyTypeCode = #{pd.companyTypeCode},
+		</if>
+    	<if test="pd.keywords != null" >
+			and (
+				companyName like CONCAT('%', #{pd.keywords}, '%') 
+			 	or contactMan like CONCAT('%', #{pd.keywords}, '%')
+			 	or contactPhone = #{pd.keywords}
+			 )
+		</if>
+		and treePath like CONCAT(#{pd.treePath}, '%') 
+		<if test="pd.currentCompanyTreePath != null">
+	    	and treePath like CONCAT(#{pd.currentCompanyTreePath}, '%') 
+		</if>
+	</select>  
+	<!--查询当前登录用户下的所有company -->  
+    <select id="companyList" parameterType="java.lang.String" resultType="com.wuliaozhiyuan.bean.system.Company">  
+    	SELECT * FROM `company` WHERE 1 = 1
+		<if test="currentCompanyTreePath != null">
+	    	and treePath like CONCAT(#{currentCompanyTreePath}, '%') 
+		</if>
+	</select>
+	<!-- 根据id查询Company -->
+	<select id="getCompany" parameterType="java.lang.Long" resultType="com.wuliaozhiyuan.bean.system.Company">
+		SELECT c.`treePath` FROM company c WHERE c.`id` = #{id};
+	</select>  
+		
+	
+</mapper>  

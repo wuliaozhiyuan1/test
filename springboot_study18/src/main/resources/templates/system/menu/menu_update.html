@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+      <head th:include="system/index/top :: top">
+
+	  </head>
+
+<body class="no-skin">
+	<div class="main-container" id="main-container">
+		<!-- /section:basics/sidebar -->
+		<div class="main-content">
+			<div class="main-content-inner"> 
+				<div class="page-content">
+					<div class="page-header">
+							<h1>
+								<small>
+									<i class="ace-icon fa fa-angle-double-right"></i>
+									修改菜单
+								</small>
+							</h1>
+					</div>
+					<div class="row"> 
+						<div class="col-xs-12">
+							<form
+								 name="menuForm" id="menuForm" method="post" class="form-horizontal">
+								
+								<div class="form-group">
+									<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 名称 :</label>
+									<div class="col-sm-9">
+										<input type="text" name="menu_name" id="menuName" th:value="${pd.menu.name}"
+										 placeholder="这里输入菜单名称" class="col-xs-10 col-sm-5" />
+									</div>
+								</div>
+								 <div class="form-group">
+									<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 链接  :</label>
+									<div class="col-sm-9">
+										<input type="text" name="menu_url" id="menuUrl" th:value="${pd.menu.url == '#' ? '' : pd.menu.url}" th:attr="readonly=${pd.menu.parentId == 0 ? 'readonly' : 'false'}, 
+											placeholder=${pd.menu.parentId==0 ? '顶级菜单禁止输入' : '这里输入菜单链接'}"
+											  class="col-xs-10 col-sm-5" />
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 菜单标示符 :</label>
+									<div class="col-sm-9">
+										<input type="text" name="permission" id="permission" th:value="${pd.menu.permission}" placeholder="这里输入菜单标示符" class="col-xs-10 col-sm-5" />
+									</div>
+								</div>
+								 <div class="form-group">
+									<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 序号 : </label>
+									<div class="col-sm-9">
+										<input type="number" name="menuOrder" id="menuOrder" th:value="${pd.menu.menuOrder}"
+										 placeholder="这里输入菜单序号" title="请输入正整数" class="col-xs-10 col-sm-5" />
+									</div>
+								</div>
+								 <div class="form-group" th:if="${pd.menu.menuType != null}">
+									<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 类型 : </label>
+									<div class="col-sm-9">
+										<label style="float:left;padding-left: 8px;padding-top:7px;">
+											<input name="menuType" value="false" type="radio" class="ace" th:attr="checked=${not pd.menu.menuType ? 'checked' : ''}"/>
+											<span class="lbl"> 系统菜单</span>
+										</label>
+										<label style="float:left;padding-left: 5px;padding-top:7px;">
+											<input name="menuType" type="radio" value="true" class="ace" th:attr="checked=${pd.menu.menuType ? 'checked' : ''}"/>
+											<span class="lbl"> 业务菜单</span>
+										</label>
+									</div>
+								</div>
+								 <div class="form-group">
+									<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 状态 : </label>
+									<div class="col-sm-9">
+										<label style="float:left;padding-left: 8px;padding-top:7px;">
+											<input name="available" type="radio" class="ace" value="true" th:attr="checked=${pd.menu.available ? 'true' : 'false'}"/>
+											<span class="lbl"> 显示</span>
+										</label>
+										<label style="float:left;padding-left: 5px;padding-top:7px;">
+											<input name="available" type="radio" class="ace" value="false" th:attr="checked=${not pd.menu.available ? 'true' : 'false'}"/>
+											<span class="lbl"> 隐藏</span>
+										</label>
+									</div>
+								</div>
+								 <div class="clearfix form-actions">
+									<div class="col-md-offset-3 col-md-9">
+										<a class="btn btn-mini btn-primary" onclick="save();">保存</a>
+										<a class="btn btn-mini btn-danger" th:onclick="${'goback(''' + pd.menu.parentId + ''')'}">取消</a>
+									</div>
+								</div>
+								<div class="hr hr-18 dotted hr-double"></div>
+							</form>
+						</div>
+					</div>
+					
+				
+				</div>
+			</div>
+		</div>
+		<!-- 返回顶部 -->
+		<a href="#" id="btn-scroll-up"
+			class="btn-scroll-up btn btn-sm btn-inverse"> <i
+			class="ace-icon fa fa-angle-double-up icon-only bigger-110"></i>
+		</a>
+	</div>
+	<div th:include="system/index/foot :: foot"></div>
+	<!--提示框-->
+	<script type="text/javascript" th:src="@{/plugins/jquery-tip/jquery.tips.js}"></script>
+	<!-- inline scripts related to this page -->
+	<script type="text/javascript" th:inline="javascript">
+	/*<![CDATA[*/
+		$(top.hangge());
+		
+		//返回
+		function goback(menu_id){
+			top.jzts();
+			window.location.href=[[@{/}]] + "menu.do?menu_id="+menu_id;
+		}
+		
+		//保存
+		function save(){
+			if($("#menuName").val()==""){
+				$("#menuName").tips({
+					side:3,
+		            msg:'请输入菜单名称',
+		            bg:'#AE81FF',
+		            time:2
+		        });
+				$("#menuName").focus();
+				return false;
+			}
+			if(!/^\w+:menu$/i.test($("[name=permission]").val())){
+				$("[name=permission]").tips({
+					side:3,
+		            msg:'权限标示符格式必须为:menu结尾',
+		            bg:'#AE81FF',
+		            time:2
+		        });
+				$("#menuName").focus();
+				return false;
+			}
+			if($("#permission").val()==""){
+				$("#permission").tips({
+					side:3,
+		            msg:'请输入菜单标示符',
+		            bg:'#AE81FF',
+		            time:2
+		        });
+				$("#permission").focus();
+				return false;
+			}
+			if($("#menuOrder").val()==""){
+				$("#menuOrder").tips({
+					side:1,
+		            msg:'请输入菜单序号',
+		            bg:'#AE81FF',
+		            time:2
+		        });
+				$("#menuOrder").focus();
+				return false;
+			}
+			if(isNaN(Number($("#menuOrder").val()))){
+				$("#menuOrder").tips({
+					side:1,
+		            msg:'菜单序号必须为数字',
+		            bg:'#AE81FF',
+		            time:2
+		        });
+				$("#menuOrder").focus();
+				$("#menuOrder").val(1);
+				return false;
+			}
+			var data = {};
+			debugger
+			data.id = [[${pd.menu.id}]]
+			data.name = $("#menuName").val();
+			data.available = $("[name=available]:checked").val();
+			data.menuType = $("[name=menuType]:checked").val();
+			data.permission = $("#permission").val();
+			data.haveChildren = $("#menuUrl").val() == "";
+			data.url = $("#menuUrl").val() == "" ? "#" : $("#menuUrl").val();
+			//修改之前的permission，用于crud权限的修改：需要通过这个permission找到crud权限
+			data.oldPermission = [[${pd.menu.permission}]]
+			data.menuOrder = $("#menuOrder").val();
+			$.ajax({
+				type: "POST",
+				url: [[@{/}]] + 'menu/update.html',
+		    	data: data,
+				dataType:'json',
+				cache: false,
+				success: function(data){
+					if(data.success){
+						alert("修改成功");
+						parent.location.href=[[@{/}]] + "menu/listAllMenu.do?menu_id="+[[${pd.menu.parentId}]];
+					}else{
+						if(data.msg != null){
+							alert(data.msg);
+						}else{
+							alert("修改失败");
+						}
+					}
+				},
+				error:function(data){
+					alert("请求失败");
+				}
+			});
+		}
+		/*]]>*/
+	</script>
+</body>
+
+
+</html>

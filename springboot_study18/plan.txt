@@ -1,0 +1,39 @@
+﻿2017-11-3号之前：
+1、先做成一个springboot集成mybatis的范例。
+2、然后再这个项目中集成mybaits。
+3、然后用mybatis查出所有的权限。：SELECT
+	*
+FROM
+	udy20171030.syspermission sy
+WHERE
+	sy.id IN (
+		SELECT
+			s.permissionId
+		FROM
+			udy20171030.sysrolepermission s
+		WHERE
+			s.roleId IN (
+				SELECT
+					ur.roleId
+				FROM
+					udy20171030.sysuserrole ur
+				WHERE
+					ur.uid = 1
+			)
+	);
+4、通过权限，构造出菜单。	
+已完成前四点。
+
+2017-11-4:
+一、菜单的添加功能。菜单的修改功能。菜单的删除功能。
+2017-11-5:
+还有：写aop拦截所有requirePermissioin的方法，然后根据标示符第一位，查询所有增删改查权限。然后赋给ModelAndView的QX.Add,Qx.delete,Qx.update.Qx.view对象
+2017-11-7:前端，对permission进行“：”校验。
+1、一些bug：自动重启的时候，为什么会错误。
+2、隔了一段时间后，服务器就访问不了了
+
+2017-11-20号：websocket的站内聊天。站内信、信来了的时候的声音提醒。
+
+2017-11-01：给page配置别名
+
+2017-11-12：一、自适应上面，和原来的页面有不同。二、权限是多级的，现在只是一级。

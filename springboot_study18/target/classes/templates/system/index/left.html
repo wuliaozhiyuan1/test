@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+    <head>
+    	
+    </head>
+    <body>
+    	<div th:fragment="left" >
+    		<script type="text/javascript">
+				try{ace.settings.check('sidebar' , 'fixed')}catch(e){}
+			</script>
+			<ul class="nav nav-list">
+				<li class="">
+					<a href="main/index">
+						<i class="menu-icon fa fa-home blue"></i>
+						<span class="menu-text">首页</span>
+					</a>
+					<b class="arrow"></b>
+				</li>
+				<!-- <p th:if="${session.permissionTree.subSysPermissions.entrySet()}">hello</p> -->
+				 <li th:each="mapPermission : ${session.permissionTree.subSysPermissions.entrySet()}">
+					<a href="#"
+					 th:class="${mapPermission.value.subSysPermissions} ? dropdown-toggle : '' " style="cursor:pointer;">
+						<i th:class="${mapPermission.value.menuIcon} ?: 'menu-icon fa fa-leaf black'"></i>
+						<span class="menu-text" data-th-text="${mapPermission.value.name}"> UI 组件 </span>
+						<b class="arrow fa fa-angle-down" th:if="${mapPermission.value.subSysPermissions.size() != 0}"></b>
+					</a>
+					<b class="arrow"></b>
+					<ul class="submenu" th:if="${mapPermission.value.subSysPermissions.size() != 0}">
+						<li th:each="mapPermission1 : ${mapPermission.value.subSysPermissions.entrySet()}">
+							<a href="#" th:attr="target=${mapPermission1.value.url != '#' ? 'mainFrame' : ''}"
+							th:onclick="${mapPermission1.value.url != '#' ? 
+							'siMenu(''z' + mapPermission1.value.id + ''',
+							''lm' + mapPermission.value.id + ''',
+							''' + mapPermission1.value.name + ''',
+							''' + mapPermission1.value.url + '''
+							)'
+							: ''}"
+							 th:class="${mapPermission1.value.subSysPermissions} ? dropdown-toggle : '' " style="cursor:pointer;">
+								<i th:class="${mapPermission1.value.menuIcon} ?: 'menu-icon fa fa-leaf black'"></i>
+								<span class="menu-text" data-th-text="${mapPermission1.value.name}"> UI 组件 </span>
+								<b class="arrow fa fa-angle-down" th:if="${mapPermission1.value.subSysPermissions.size() != 0}"></b>
+							</a>
+							<b class="arrow"></b>
+							<ul class="submenu" th:if="${mapPermission1.value.subSysPermissions.size() != 0}">
+								<li th:each="mapPermission2 : ${mapPermission1.value.subSysPermissions.entrySet()}">
+									<a href="#" th:attr="target=${mapPermission2.value.url != '#' ? 'mainFrame' : ''}"
+									th:onclick="${mapPermission2.value.url != '#' ? 
+												'siMenu(''m' + mapPermission2.value.id + ''',
+												''z' + mapPermission1.value.id + ''',
+												''' + mapPermission2.value.name + ''',
+												''' + mapPermission2.value.url + '''
+												)'
+												: ''}"
+									 th:class="${mapPermission2.value.subSysPermissions} ? dropdown-toggle : '' " style="cursor:pointer;">
+										<i th:class="${mapPermission2.value.menuIcon} ?: 'menu-icon fa fa-leaf black'"></i>
+										<span class="menu-text" data-th-text="${mapPermission2.value.name}"> UI 组件 </span>
+										<b class="arrow fa fa-angle-down" th:if="${mapPermission2.value.subSysPermissions.size() != 0}"></b>
+									</a>
+									<b class="arrow"></b>
+									<ul class="submenu" th:if="${mapPermission2.value.subSysPermissions.size() != 0}">
+										<li th:each="mapPermission3 : ${mapPermission2.value.subSysPermissions.entrySet()}">
+										<a href="#" th:attr="target=${mapPermission3.value.url != '#' ? 'mainFrame' : ''}"
+											th:onclick="${mapPermission3.value.url != '#' ? 
+												'siMenu(''n' + mapPermission3.value.id + ''',
+												''m' + mapPermission2.value.id + ''',
+												''' + mapPermission3.value.name + ''',
+												''' + mapPermission3.value.url + '''
+												)'
+												: ''}"
+										 th:class="${mapPermission3.value.subSysPermissions} ? dropdown-toggle : '' " style="cursor:pointer;">
+											<i th:class="${mapPermission3.value.menuIcon} ?: 'menu-icon fa fa-leaf black'"></i>
+											<span class="menu-text" data-th-text="${mapPermission3.value.name}"> UI 组件 </span>
+											<b class="arrow fa fa-angle-down"></b>
+										</a>
+										<b class="arrow"></b>
+									</li>
+									</ul>
+								</li>
+							</ul>
+						</li>
+					</ul>
+				</li> 
+				
+			</ul>	
+			
+			<div class="sidebar-toggle sidebar-collapse" id="sidebar-collapse">
+				<i class="ace-icon fa fa-angle-double-left" data-icon1="ace-icon fa fa-angle-double-left" data-icon2="ace-icon fa fa-angle-double-right"></i>
+			</div>
+
+			<!-- /section:basics/sidebar.layout.minimize -->
+			<script type="text/javascript">
+				try{ace.settings.check('sidebar' , 'collapsed')}catch(e){}
+			</script>	
+    	</div>
+	</body>
+</html>

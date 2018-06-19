@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="height=device-height, width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=0"/>
+<title>Insert title here</title>
+
+<style type="text/css">
+	html,body{
+		padding:0;
+		margin:0;
+	}
+	
+	.container{
+		padding:0;
+	}
+	
+</style>
+<script th:inline="javascript">
+/*<![CDATA[*/
+	(function(doc, win) {
+	    var screenWidth = 0,root = doc.documentElement;
+	    /*
+	    先只适配小屏和中屏，大屏也当中屏处理
+	    var size = 'M', 
+	    **/
+	    var size = 'L';
+	    if (window.screen && screen.width) {
+	        screenWidth = screen.width;
+	        if (screenWidth > 1920) {
+	            // 超大屏，例如iMac
+	            size = 'L';
+	        } else if (screenWidth < 480) {
+	            // 小屏，如手机
+	            size = 'S';
+	        }
+	    }
+	    // 标记CSS
+	    root.className = size;
+	    // 标记JS
+	    win.SIZE = size;        
+	})(document, window);
+/*]]>*/
+</script>
+<link rel="stylesheet" href="css/login.css"/>
+
+</head>
+
+<body class="body">
+   			index
+</body>
+
+
+</html>

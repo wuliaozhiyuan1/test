@@ -1,0 +1,108 @@
+.S .body{
+		height:100vh;
+	}
+	.L .body{
+		width:100vw;
+		height:100vh;
+		background:url(../img/login/banner_slide_01.jpg);
+		background-size:100vw 100vh
+	}
+	.S .background1{
+		height:100vh;
+		width:100vw;
+		background-color:#207BDD;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+	.S .container{
+		width:100vw;
+		height:56vw;
+		background:url(../img/login/banner_slide_01.jpg);
+		background-size:100vw 80vw
+	}
+	.S .top1{
+		line-height:10vw;
+	}
+	.L .top1{
+		line-height:15vh;
+	}
+	.S .centDiv{
+		height:38vw
+	}
+	.L .centDiv{
+		height:44vh;
+	}
+	.L .logo{
+		height:7vh;
+	}
+	.S .form-group{
+		margin-bottom: 2vw;
+	}
+	.L .form-group{
+		margin-bottom: 2vh;
+	}
+	.S .form-group-top{
+		margin-top:1vw;
+	}
+	.L .form-group-top{
+		margin-top:2vh;
+	}
+	.S .form-control{
+		height:3.5vw;
+		line-height:2vw;
+		padding:0.3vw;
+		font-size:0.5vw;
+		
+		
+		/* 
+		line-height:0.5vw;
+		padding:0vw;
+		font-size:0.5vw */
+	}
+	.L .form-control{
+		height:4vh;
+		line-height:1vw;
+		padding:0vw;
+		font-size:1vw
+	}
+	.S .forget{
+		margin-bottom: 0vw;
+		font-size:1vw;
+	}
+	.L .forget{
+		margin-bottom: 0;
+		font-size:2vh;
+	}
+	.S .yan{
+		height:4vw;
+	}
+	.L .yan{
+		height:2vw;
+	}
+	.S .code{
+		height:4vw;
+		;width:12vw;
+	}
+	.L .code{
+		height:4vh;
+		width:8vw;
+	}
+	.S .codeInput{
+		width:15vw;
+		height:4vw;
+	}
+	.L .codeInput{
+		height:4vh;
+		width:12vw;
+	}
+	.S .btn{
+		height:4vw;
+		line-height:4vw;
+	}
+	.L .btn{
+		height:2vw;line-height:2vw;
+	}
+	.S .remender{
+		margin-top:0;
+	}

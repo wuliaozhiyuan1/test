@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<!DOCTYPE mapper  
+       PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+       "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+<mapper namespace="com.wuliaozhiyuan.mapper.system.SitemailMapper">  
+
+	<!--表名 -->
+	<sql id="tableName">
+		siteMail
+	</sql>
+	<!--统计站内信数量，通过状态，收件人 -->  
+    <select id="totalNumByStatus" parameterType="pageData" resultType="java.lang.Integer">  
+        SELECT count(1) num  
+        FROM 
+        <include refid="tableName"></include>
+         d 
+        WHERE d.`status` = #{status} and d.toUsername = #{toUsername}
+	</select> 	
+	
+  <!--查询字典列表，通过查询参数 -->  
+    <select id="sitemailListPage" parameterType="page" resultType="com.wuliaozhiyuan.bean.system.Sitemail">  
+    		SELECT id, 
+    			content, fromuser, fromusername, 
+    			sendTime, STATUS, toUser, toUsername, 
+    			TYPE FROM sitemail where 1 = 1
+    	 	<if test="pd.keywords != null" >
+			and (
+				toUsername like CONCAT('%', #{pd.keywords}, '%') 
+			 	or fromUser like CONCAT('%', #{pd.keywords}, '%')
+			 	or content like CONCAT('%', #{pd.keywords}, '%')
+			 )
+			</if>
+			<if test="pd.sendTime != null">
+				and sendTime between #{pd.startSendTime} and #{pd.endSendTime}
+			</if>
+			<if test="pd.status != null">
+				and status = #{pd.status}
+			</if>
+			<if test="pd.type == '发件箱'">
+				and fromUsername = #{pd.fromUsername}
+			</if>
+			<if test="pd.type == '收件箱'">
+				and toUsername = #{pd.toUsername}
+			</if>
+	</select>  
+	
+</mapper>  

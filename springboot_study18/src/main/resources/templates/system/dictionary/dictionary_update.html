@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+      <head th:include="system/index/top :: top">
+
+	  </head>
+
+<body class="no-skin">
+	<div class="main-container" id="main-container">
+		<!-- /section:basics/sidebar -->
+		<div class="main-content">
+			<div class="main-content-inner">
+				<div class="page-content">
+					<div class="row">
+						<div class="col-xs-12">
+							<form
+								 name="form" id="form" method="post" th:action="@{/dictionary/update.do}">
+								 <input type="hidden" name="id" th:value="${pd.dictionary.id }"/>
+								 <div id="zhongxin">
+								 	<table id="table_report" class="table table-striped table-bordered table-hover" style="margin-top:15px;">
+										<tr>
+											<td style="width:70px;text-align: right;padding-top: 13px;">名称:</td>
+											<td><input type="text" name="name" id="name" th:value="${pd.dictionary.name}" maxlength="50" placeholder="这里输入名称" title="名称" style="width:96%"/>
+												<font color="red">*</font>
+											</td>
+										</tr>
+										<tr>
+											<td style="width:70px;text-align: right;padding-top: 13px;">英文名称:</td>
+											<td>
+												<input type="text" name="englishName" id="englishName" th:value="${pd.dictionary.englishName}" maxlength="50" placeholder="这里输入英文" title="英文" style="width:96%;"/>
+												<font color="red">*</font>
+											</td>
+										</tr>
+										<tr>
+											<td style="width:70px;text-align: right;padding-top: 13px;">编码:</td>
+											<td>
+												<input type="text" name="code" id="code" th:value="${pd.dictionary.code}" maxlength="32" placeholder="这里输入编码 (不重复, 禁止修改)" title="编码" style="width:96%;"/>
+												<font color="red">*</font>
+											</td>
+										</tr>
+										<tr>
+											<td style="width:70px;text-align: right;padding-top: 13px;">排序:</td>
+											<td>
+												<input type="number" name="orders" th:value="${pd.dictionary.orders}" id="orders" maxlength="32" placeholder="这里输入排序" title="排序"/>
+												<font color="red">*</font></td>
+										</tr>
+										<tr>
+											<td style="width:70px;text-align: right;padding-top: 13px;">备注:</td>
+											<td>
+												<textarea rows="3" cols="46" name="remark" id="remark" th:text="${pd.dictionary.remark}" placeholder="这里输入备注" title="备注"  style="width:96%;" maxlength="255"></textarea>
+											</td>
+										</tr>
+										<tr>
+											<td class="center" colspan="10">
+												<a class="btn btn-mini btn-primary" onclick="save();">保存</a>
+												<a class="btn btn-mini btn-danger" onclick="top.Dialog.close();">取消</a>
+											</td>
+										</tr>
+								 	</table>
+								 </div>
+								 <div id="zhongxin2" class="center" style="display:none">
+								 	<br/><br/><br/><br/><br/><img th:src="@{/img/jiazai.gif}" style="width: 50px;" /><br/><br/>
+								 	<h4 class="lighter block green">提交中...</h4>
+								 </div>
+							</form>
+							<div id="zhongxin2" class="center" style="display:none">
+							 	<img th:src="@{/img/jzx.gif}" style="width: 50px;" /><br/>
+							 	<h4 class="lighter block green"></h4>
+							 </div>
+						</div>
+					</div>
+					
+				
+				</div>
+			</div>
+		</div>
+		<!-- 返回顶部 -->
+		<a href="#" id="btn-scroll-up"
+			class="btn-scroll-up btn btn-sm btn-inverse"> <i
+			class="ace-icon fa fa-angle-double-up icon-only bigger-110"></i>
+		</a>
+	</div>
+	<div th:include="system/index/foot :: foot"></div>
+	<!--提示框-->
+	<script type="text/javascript" th:src="@{/plugins/jquery-tip/jquery.tips.js}"></script>
+	<!-- inline scripts related to this page -->
+	<script type="text/javascript" th:inline="javascript">
+	/*<![CDATA[*/
+		$(top.hangge());
+		//保存
+		function save(){
+			if($("#name").val()==""){
+				$("#name").tips({
+					side:3,
+		            msg:'请输入名称',
+		            bg:'#AE81FF',
+		            time:2
+		        });
+				$("#name").focus();
+				return false;
+			}
+			if($("#engListName").val()==""){
+				$("#engListName").tips({
+					side:3,
+		            msg:'请输入英文',
+		            bg:'#AE81FF',
+		            time:2
+		        });
+				$("#engListName").focus();
+				return false;
+			}
+			if($("#code").val()==""){
+				$("#code").tips({
+					side:3,
+		            msg:'请输入编码',
+		            bg:'#AE81FF',
+		            time:2
+		        });
+				$("#code").focus();
+				return false;
+			}
+			if($("#orders").val()==""){
+				$("#orders").tips({
+					side:3,
+		            msg:'请输入排序顺序',
+		            bg:'#AE81FF',
+		            time:2
+		        });
+				$("#orders").focus();
+				return false;
+			}
+			$("#form").submit();
+			$("#zhongxin").hide();
+			$("#zhongxin2").show();
+		}
+		//编码+parentId必须唯一，这样才能通过parentId和编码确定数据字典
+		function hasCode(){
+			var code = $.trim($("#code").val());
+			if("" == code){
+				return;
+			}
+			var parentId = [[${pd.dictionary.parentId}]];
+			$.ajax({
+				type: "POST",
+				url: [[@{/}]] + 'dictionary/hasCode.do',
+		    	data: {code:code, parentId:parentId},
+				dataType:'json',
+				cache: false,
+				success: function(data){
+					 if(!data.success){
+						$("#code").tips({
+							side:1,
+				            msg:'编码'+code+'已存在,重新输入',
+				            bg:'#AE81FF',
+				            time:5
+				        });
+						$('#code').val('');
+					 }
+				}
+			});
+		}
+		//编码change事件：编码+parentId必须唯一，这样才能通过parentId和编码确定数据字典
+		$("#code").change(function(){
+			hasCode();
+		});
+		
+		
+		/*]]>*/
+	</script>
+</body>
+
+
+</html>

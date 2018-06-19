@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+      <head th:include="system/index/top :: top">
+
+	  </head>
+
+<body class="no-skin">
+	<div class="main-container" id="main-container">
+		<!-- /section:basics/sidebar -->
+		<div class="main-content">
+			<div class="main-content-inner">
+				<div class="page-content">
+					<div class="row">
+						<div class="col-xs-12">
+							<table id="dynamic-table" class="table table-striped table-bordered table-hover">
+								<thead>
+									<tr>
+										<th class="center" style="width: 50px;">序号</th>
+										<th class='center'>角色</th>
+										<th th:if="${crudButtonPermission.get('update')}" class='center'>增</th>
+										<th th:if="${crudButtonPermission.get('update')}" class='center'>删</th>
+										<th th:if="${crudButtonPermission.get('update')}" class='center'>改</th>
+										<th th:if="${crudButtonPermission.get('update')}" class='center'>查</th>
+										<th class='center' style="width: 120px;">操作</th>
+									</tr>
+								</thead>
+
+								<tbody>
+									<tr th:if="${crudButtonPermission.get('view')}" th:each="role,roleStat : ${roleList}">
+										<td class='center' th:text="${roleStat.count}"></td>
+										<td class='center' th:text="${role.name}"></td>
+										<td style="width:30px;" th:if="${crudButtonPermission.get('update')}">
+											<a th:onclick="${'roleButton(''' + role.id + ''',''add_qx'')'}" class="btn btn-warning btn-mini" title="分配新增权限">
+												<i class="ace-icon fa fa-wrench bigger-110 icon-only"></i>
+											</a>
+										</td>
+										<td style="width:30px;" th:if="${crudButtonPermission.get('update')}">
+											<a th:onclick="${'roleButton(''' + role.id + ''',''del_qx'')'}" class="btn btn-warning btn-mini" title="分配删除权限">
+												<i class="ace-icon fa fa-wrench bigger-110 icon-only"></i>
+											</a>
+										</td>
+										<td style="width:30px;" th:if="${crudButtonPermission.get('update')}">
+											<a th:onclick="${'roleButton(''' + role.id + ''',''edit_qx'')'}" class="btn btn-warning btn-mini" title="分配修改权限">
+												<i class="ace-icon fa fa-wrench bigger-110 icon-only"></i>
+											</a>
+										</td>
+										<td style="width:30px;" th:if="${crudButtonPermission.get('update')}">
+											<a th:onclick="${'roleButton(''' + role.id + ''',''cha_qx'')'}" class="btn btn-warning btn-mini" title="分配查看权限">
+												<i class="ace-icon fa fa-wrench bigger-110 icon-only"></i>
+											</a>
+										</td>
+										<td style="width:155px;">
+											<div style="width:100%;" class="center" th:if="${not crudButtonPermission.get('update')}">
+												<span class="label label-large label-grey arrowed-in-right arrowed-in">
+													<i class="ace-icon fa fa-lock" title="无权限"></i>
+												</span>
+											</div>
+											<a class="btn btn-mini btn-purple" th:onclick="${'editRights(''' + role.id + ''')'}" th:if="${crudButtonPermission.get('update')}">
+												<i class="icon-pencil"></i>菜单权限
+											</a>
+											<a class='btn btn-mini btn-info' title="编辑" th:onclick="${'editRole(''' + role.id + ''')'}" th:if="${crudButtonPermission.get('update')}">
+												<i class='ace-icon fa fa-pencil-square-o bigger-130'></i>
+											</a>
+											<a class='btn btn-mini btn-danger' title="删除" th:onclick="${'delRole(''' + role.id + ''', ''' + role.name + ''')'}" th:if="${crudButtonPermission.get('delete')}">
+												<i class='ace-icon fa fa-trash-o bigger-130'></i>
+											</a>
+										</td>
+									</tr>
+									<tr th:if="${not crudButtonPermission.get('view')}">
+										<td colspan="100" class="center">您无权查看</td>
+									</tr>
+									<tr th:if="${roleList == null or roleList.size() == 0}">
+										<td colspan="100" class="center" >没有相关数据</td>
+									</tr>
+								</tbody>
+							</table>
+							
+							<div>
+								&nbsp;&nbsp;
+								<a th:if="${crudButtonPermission.get('add')}" class="btn btn-sm btn-success" onclick="addRole()">新增角色</a>
+							</div>
+							
+						</div>
+					</div>
+					
+				
+				</div>
+			</div>
+		</div>
+		<!-- 返回顶部 -->
+		<a href="#" id="btn-scroll-up"
+			class="btn-scroll-up btn btn-sm btn-inverse">dfsa <i
+			class="ace-icon fa fa-angle-double-up icon-only bigger-110"></i>
+		</a>
+	</div>
+	<div th:include="system/index/foot :: foot">
+	</div>
+	<!-- 删除时确认窗口 -->
+	<script th:src="@{/plugins/ace/js/bootbox.js}"></script>
+	<!-- ace scripts -->
+	<script th:src="@{/plugins/ace/js/ace/ace.js}"></script>
+	<!-- inline scripts related to this page -->
+	<script type="text/javascript" th:inline="javascript">
+	/*<![CDATA[*/
+		$(document).ready(function(){
+			top.hangge();
+		});	
+		
+		//新增组
+		function addRole(){
+			 top.jzts();
+			 var diag = new top.Dialog();
+			 diag.Drag=true;
+			 diag.Title ="新增";
+			 diag.URL = [[@{/}]] + 'role/toAdd.html';
+			 diag.Width = 400;
+			 diag.Height = 200;
+			 diag.CancelEvent = function(){ //关闭事件
+				 if(diag.innerFrame.contentWindow.document.getElementById('zhongxin').style.display == 'none'){
+					top.jzts();
+					setTimeout("self.location.reload()",100);
+				}
+				diag.close();
+			 };
+			 diag.show();
+		}
+	//修改
+		function editRole(role_id){
+			 top.jzts();
+			 var diag = new top.Dialog();
+			 diag.Drag=true;
+			 diag.Title ="编辑";
+			 diag.URL = [[@{/}]] + "role/toUpdate.html?id=" + role_id;
+			 diag.Width = 400;
+			 diag.Height = 200;
+			 diag.CancelEvent = function(){ //关闭事件
+				 if(diag.innerFrame.contentWindow.document.getElementById('zhongxin').style.display == 'none'){
+					top.jzts();
+					setTimeout("self.location.reload()",100);
+				}
+				diag.close();
+			 };
+			 diag.show();
+		}
+		
+		//删除
+		function delRole(role_id,role_name){
+			bootbox.confirm("确定要删除["+role_name+"]吗?", function(result) {
+				if(result) {
+					var url = [[@{/}]] + "role/delete.do?id=" + role_id;
+					top.jzts();
+					$.get(url,function(data){
+						debugger
+						if(data.success){
+							top.jzts();
+							window.location.reload();
+						}else{
+							top.hangge();
+							bootbox.dialog({
+								message: "<span class='bigger-110'>删除失败，此角色已被使用!</span>",
+								buttons: 			
+								{
+									"button" :
+									{
+										"label" : "确定",
+										"className" : "btn-sm btn-success"
+									}
+								}
+							});
+						}
+					});
+				}
+			});
+		}
+		//菜单权限
+		function editRights(role_id){
+			 top.jzts();
+			 var diag = new top.Dialog();
+			 diag.Drag = true;
+			 diag.Title = "菜单权限";
+			 diag.URL = [[@{/}]] + 'role/listMenu.html?id='+role_id;
+			 diag.Width = 320;
+			 diag.Height = 450;
+			 diag.CancelEvent = function(){ //关闭事件
+				diag.close();
+			 };
+			 diag.show();
+		}
+		//按钮权限(增删改查)
+		function roleButton(role_id,msg){
+			top.jzts();
+			var type = "";
+			var title = "";
+			if(msg == 'add_qx'){
+				type = "add";
+				title = "授权新增权限(此角色下打勾的菜单拥有新增权限)";
+			}else if(msg == 'del_qx'){
+				type = "delete";
+				title = "授权删除权限(此角色下打勾的菜单拥有删除权限)";
+			}else if(msg == 'edit_qx'){
+				type = "update";
+				title = "授权修改权限(此角色下打勾的菜单拥有修改权限)";
+			}else if(msg == 'cha_qx'){
+				type = "view";
+				title = "授权查看权限(此角色下打勾的菜单拥有查看权限)";
+			}
+			 var diag = new top.Dialog();
+			 diag.Drag = true;
+			 diag.Title = title;
+			 diag.URL = [[@{/}]] + 'role/crudButtonPermission.do?id='+role_id+'&msg='+msg + '&type=' + type;
+			 diag.Width = 330;
+			 diag.Height = 450;
+			 diag.CancelEvent = function(){ //关闭事件
+				diag.close();
+			 };
+			 diag.show();
+		}
+	/*]]>*/
+	</script>
+	
+</body>
+
+
+</html>

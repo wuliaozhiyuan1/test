@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<!DOCTYPE mapper  
+       PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+       "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+<mapper namespace="com.wuliaozhiyuan.mapper.system.SysPermissionMapper">  
+
+	<!--表名 -->
+	<sql id="tableName">
+		syspermission
+	</sql>
+     
+    <!--查询指定类型的所有权限，通过UserId、资源权限类型，资源类型为空，则查询所有的资源 -->  
+    <select id="listPermissionByUserId" parameterType="pageData" resultType="com.wuliaozhiyuan.bean.shiro.SysPermission">  
+        SELECT
+			*
+		FROM
+			syspermission sy
+		WHERE
+			sy.id IN (
+				SELECT
+					s.permissionId
+				FROM
+					sysrolepermission s
+				WHERE
+					s.roleId IN (
+						SELECT
+							ur.roleId
+						FROM
+							sysuserrole ur
+						WHERE
+							ur.uid = #{uid}
+					)
+			)
+		<if test="resourceType != null">
+			 and sy.resourceType = #{resourceType}
+		</if>	
+		<if test="available != null">
+			 and sy.available = #{available,jdbcType=BOOLEAN}
+		</if>	
+	</select>  
+    <!--查询指定类型的所有权限，通过parentId、资源权限类型，资源类型为空，则查询所有的资源 -->  
+    <select id="listPermissionByParentId" parameterType="com.wuliaozhiyuan.util.PageData" resultType="com.wuliaozhiyuan.bean.shiro.SysPermission">  
+       	select s.id,
+       	 		s.available,
+       	 		s.haveChildren,
+       	 		s.menuIcon,
+       	 		s.menuOrder,
+       	 		s.`name`,
+       	 		s.permission,
+       	 		s.url,
+       	 		s.menuType
+		 from syspermission s
+		 where s.parentId = #{parentId} 
+		 <if test="resourceType != null">
+			 and s.resourceType = #{resourceType}
+		</if>
+	</select>  
+     
+      <!--查询权限菜单，通过id -->  
+    <select id="getSysPermissionById" parameterType="java.lang.Long" resultType="com.wuliaozhiyuan.bean.shiro.SysPermission">  
+       	select s.id,
+       	 		s.available,
+       	 		s.haveChildren,
+       	 		s.menuIcon,
+       	 		s.menuOrder,
+       	 		s.menuType,
+       	 		s.`name`,
+       	 		s.permission,
+       	 		s.url,
+       	 		s.parentId,
+       	 		s.parentIds
+		 from syspermission s
+		 where s.id = #{id};
+	</select>  
+	<!-- 修改 -->
+	<update id="update" parameterType="com.wuliaozhiyuan.util.PageData">
+		update
+		<include refid="tableName"></include>
+		<set>
+		    <if test="haveChildren != null">
+				haveChildren = #{haveChildren,jdbcType=BOOLEAN},
+			</if>	
+		    <if test="available != null">
+				available = #{available,jdbcType=BOOLEAN},
+			</if>	
+		    <if test="name != null">
+				name = #{name},
+			</if>	
+		    <if test="permission != null">
+				permission = #{permission},
+			</if>	
+		    <if test="url != null">
+				url = #{url},
+			</if>	
+		    <if test="menuIcon != null">
+				menuIcon = #{menuIcon},
+			</if>	
+		    <if test="menuOrder != null">
+				menuOrder = #{menuOrder},
+			</if>	
+		    <if test="menuType != null">
+				menuType = #{menuType,jdbcType=BOOLEAN},
+			</if>	
+		</set>
+		<where>
+			id = #{id}
+		</where>
+	</update>
+	<update id="updateCrudButtonPermissionByPermission" parameterType="pageData">
+		update
+		<include refid="tableName"></include>
+		<set>
+		    <if test="name != null">
+				name = #{name},
+			</if>	
+		    <if test="permission != null">
+				permission = #{permission},
+			</if>	
+		</set>
+		<where>
+			permission = #{oldPermission}
+		</where>
+	</update>
+	
+	<!-- 通过主键删除-->
+	<delete id="deleteById" parameterType="pageData">
+		delete from
+		<include refid="tableName"></include>
+		where 
+			id = #{id}
+	</delete>
+	<!-- 通过permission前缀删除-->
+	<delete id="deleteByPermissionPrefix" parameterType="com.wuliaozhiyuan.util.PageData">
+		delete from
+		<include refid="tableName"></include>
+		where 
+			permission like CONCAT(#{permissionPrefix},'%')
+	</delete>
+	
+	<!-- 删除权限角色关系表中的有关指定权限前缀的记录-->
+	<delete id="deleteRolePermissionByPermissionPrefix" parameterType="pageData">
+		DELETE 
+		FROM
+		  sysrolepermission 
+		WHERE permissionId IN 
+		  (SELECT 
+		    s.`id` 
+		  FROM
+		    syspermission s 
+		  WHERE s.`permission` LIKE CONCAT(#{permissionPrefix},'%')) ;
+		
+
+	</delete>
+	
+	
+</mapper>  

@@ -1,0 +1,125 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>springboot_study</groupId>
+	<artifactId>springboot18</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>1.3.3.RELEASE</version>
+	</parent>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+		<!-- 解析json的fastjson插件 -->
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>fastjson</artifactId>
+			<version>1.2.15</version>
+		</dependency>
+		<!-- shiro spring. -->  
+       <dependency>  
+           <groupId>org.apache.shiro</groupId>  
+           <artifactId>shiro-spring</artifactId>  
+           <version>1.2.2</version>  
+       </dependency>
+       <!-- shiro ehcache -->
+       <dependency>
+           <groupId>org.apache.shiro</groupId>
+           <artifactId>shiro-ehcache</artifactId>
+           <version>1.2.2</version>
+       </dependency>
+      <!--
+	      不加这个依赖会保报错
+      java.lang.ClassNotFoundException: org.springframework.security.config.annotation.web.configuration.EnableWebSecurity -->
+     <!--  <dependency>
+		 <groupId>org.springframework.boot</groupId>
+		 <artifactId>spring-boot-starter-security</artifactId>
+		</dependency> -->
+
+       <!--
+	           包含支持UI模版（Velocity，FreeMarker，JasperReports），
+	           邮件服务，
+	           脚本服务(JRuby)，
+	           缓存Cache（EHCache），
+	           任务计划Scheduling（uartz）。
+        -->
+       <dependency>
+          <groupId>org.springframework</groupId>
+          <artifactId>spring-context-support</artifactId>
+        </dependency>
+		<!-- mysql的驱动 -->
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+		</dependency>
+		<!-- druid -->
+		<dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid</artifactId>
+            <version>1.0.18</version>
+		</dependency>
+		<!-- jpa -->
+		<dependency>
+           <groupId>org.springframework.boot</groupId>
+           <artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
+		
+		<!-- thymeleaf -->	
+		<dependency>
+	         <groupId>org.springframework.boot</groupId>
+	         <artifactId>spring-boot-starter-thymeleaf</artifactId>
+		</dependency>
+		
+		 <!-- spring-boot mybatis依赖：  
+		       请不要使用1.0.0版本，因为还不支持拦截器插件，  
+	     -->  
+	    <dependency>  
+	        <groupId>org.mybatis.spring.boot</groupId>  
+	        <artifactId>mybatis-spring-boot-starter</artifactId>  
+	        <version>1.1.1</version>
+	    </dependency>  
+			    
+	    <dependency>  
+	        <groupId>websocket</groupId>  
+	        <artifactId>websocket</artifactId>  
+	        <version>1.0</version>
+	    </dependency>  
+			    
+		
+		<!-- 热部署插件 -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-devtools</artifactId>
+			<optional>true</optional> <!-- 表示依赖不会传递 -->
+		</dependency>
+		
+	</dependencies>
+
+
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin </artifactId>
+				<configuration>
+					<fork>true</fork> <!-- 如果没有该配置，devtools不会生效 -->
+				</configuration>
+			</plugin>
+			<!-- 配置spring-boot的jdk编译版本 -->
+			<plugin>
+			   <artifactId>maven-compiler-plugin</artifactId>
+			   <configuration>
+			      <source>1.8</source>
+			      <target>1.8</target>
+			   </configuration>
+			</plugin>
+		</plugins>
+	</build>
+</project>

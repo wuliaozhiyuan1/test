@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<!DOCTYPE mapper  
+       PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+       "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+<!-- 字典表Mapper -->       
+<mapper namespace="com.wuliaozhiyuan.mapper.system.DictionaryMapper">  
+
+	<!--表名 -->
+	<sql id="tableName">
+		dictionary
+	</sql>
+     
+    <!--用于构造字典树，通过父dictionaryId，查所有子字典 -->  
+    <select id="listDictionaryByParentId" parameterType="pageData" resultType="com.wuliaozhiyuan.bean.system.Dictionary">  
+        SELECT d.`id`, 
+        d.`name`, 
+        d.code,
+        d.remark, 
+        d.orders, 
+        d.isParent 
+        FROM dictionary d 
+        WHERE d.`parentId` = #{parentId} order by d.orders
+	</select>  
+    <!--查询字典列表，通过查询参数 -->  
+    <select id="dictionaryListPage" parameterType="page" resultType="com.wuliaozhiyuan.bean.system.Dictionary">  
+    	 SELECT d.`id`, d.code, d.englishName, d.`name`,d.orders, d.parentId, d.remark  FROM dictionary d 
+    	 	WHERE d.`parentId` = #{pd.parentId} 
+    	 	<if test="pd.keywords != null" >
+			and (
+				code like CONCAT('%', #{pd.keywords}, '%') 
+			 	or name like CONCAT('%', #{pd.keywords}, '%')
+			 	or englishName like CONCAT('%', #{pd.keywords}, '%')
+			 )
+		</if>
+	</select>  
+	<!--获取字典对象，通过字典id -->  
+    <select id="getDictionaryById" parameterType="Long" resultType="com.wuliaozhiyuan.bean.system.Dictionary">  
+        SELECT d.`id`,  d.code,d.englishName, d.isParent, d.`name`, d.orders, d.parentId, d.remark, d.treePath, d.parentCode FROM dictionary d WHERE id = #{id}
+	</select>  
+    
+	<!--查询code数量，通过code -->  
+    <select id="countCodeNum" parameterType="pageData" resultType="java.lang.Integer">
+    	 SELECT COUNT(1) num FROM dictionary d WHERE d.code = #{code} and d.parentId = #{parentId}
+	</select>  
+	
+	<!-- 保存角 -->
+	<insert id="save" parameterType="com.wuliaozhiyuan.bean.system.Dictionary">
+		INSERT INTO dictionary (CODE, englishName, isParent, NAME, orders, parentId, remark, treePath, parentCode) 
+			VALUES (#{code},#{englishName},#{isParent},#{name},#{orders},#{parentId},#{remark},#{treePath}, #{parentCode});
+	</insert>
+	<!-- 保存修改 -->
+	<update id="update" parameterType="com.wuliaozhiyuan.bean.system.Dictionary">
+		update 
+		<include refid="tableName"></include>
+		<set>
+			<if test="code != null" >
+				code = #{code},
+			</if>
+			<if test="englishName != null" >
+				englishName = #{englishName},
+			</if>
+			<if test="isParent != null" >
+				isParent = #{isParent,jdbcType=BOOLEAN},
+			</if>
+			<if test="name != null" >
+				name = #{name},
+			</if>
+			<if test="orders != null" >
+				orders = #{orders},
+			</if>
+			<if test="remark != null" >
+				remark = #{remark},
+			</if>
+		</set>
+		 WHERE id = #{id}
+	</update>
+	<!--查询子数据字典数量，通过parentId -->  
+    <select id="countSubNum" parameterType="java.lang.Long" resultType="java.lang.Integer">
+    	 SELECT COUNT(1) num FROM dictionary d WHERE d.parentId = #{parentId}
+	</select> 
+	
+	<!-- 删除-->
+	<delete id="delete" parameterType="java.lang.Long">
+		delete from
+		<include refid="tableName"></include>
+		where 
+			id = #{id}
+	</delete>
+	<!--查询数据字典，通过parentCode，用于填充下拉框-->  
+    <select id="listDictionaryByParentCode" parameterType="java.lang.String" resultType="com.wuliaozhiyuan.bean.system.Dictionary">
+    	 SELECT d.`code`, d.`name` FROM dictionary d WHERE d.parentCode = #{parentCode} ORDER BY d.`orders`;
+	</select> 
+</mapper>  

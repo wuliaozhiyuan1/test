@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<!DOCTYPE mapper  
+       PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+       "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+<mapper namespace="com.wuliaozhiyuan.mapper.system.SysRoleMapper">  
+
+	<!--表名 -->
+	<sql id="tableName">
+		sysrole
+	</sql>
+     
+    <!--查询指定类型的所有权限，通过UserId、资源权限类型，资源类型为空，则查询所有的资源 -->  
+    <select id="listRole" parameterType="pageData" resultType="com.wuliaozhiyuan.bean.shiro.SysRole">  
+        SELECT
+			*
+		FROM
+			<include refid="tableName"></include>
+	</select>  
+	 <!-- 新增-->
+	<insert id="save" parameterType="pageData">
+		insert into 
+	<include refid="tableName"></include>
+		(name, role, available) 
+		values (
+			#{name},#{role},#{available,jdbcType=BOOLEAN}	
+		)
+	</insert>
+     <!--查询角色，通过id -->  
+    <select id="getRoleById" parameterType="java.lang.Long" resultType="com.wuliaozhiyuan.bean.shiro.SysRole">  
+       	select *
+		 from
+		 <include refid="tableName"></include>
+		 where id = #{id};
+	</select>  
+	<!-- 修改 -->
+	<update id="update" parameterType="pageData">
+		update
+		<include refid="tableName"></include>
+		<set>
+		    <if test="name != null">
+				name = #{name},
+			</if>	
+		    <if test="available != null">
+				available = #{available,jdbcType=BOOLEAN},
+			</if>	
+		    <if test="role != null">
+				role = #{role},
+			</if>	
+		</set>
+		<where>
+			id = #{id}
+		</where>
+	</update>
+	 <!--查询角色下的用户数量，通过用户id-->  
+    <select id="getUserNumByroleId" parameterType="java.lang.Long" resultType="java.lang.Integer">  
+       SELECT COUNT(1) num FROM sysuserrole t WHERE t.`roleId` = #{roleId};
+	</select>  
+	
+	<!-- 通过主键删除-->
+	<delete id="deleteById" parameterType="com.wuliaozhiyuan.util.PageData">
+		delete from
+		<include refid="tableName"></include>
+		where 
+			id = #{id}
+	</delete>
+	 <!--所有的菜单，用于构造ztree树 -->  
+    <select id="listMenu" resultType="pageData">  
+       select t.`id`, 
+	       t.`name`, 
+	       t.`parentId`,
+	       t.permission
+       from syspermission t
+       where t.`available` = true and t.`resourceType` = 'menu';
+	</select>  
+	
+	 <!--查出角色下的菜单id-->  
+    <select id="listMenuByRoleId" resultType="pageData" parameterType="java.lang.Long">  
+       SELECT 
+		  s.`id` 
+		FROM
+		  syspermission s 
+		WHERE s.`id` IN 
+		  (SELECT 
+		    t.`permissionId` 
+		  FROM
+		    sysrolepermission t 
+		  WHERE t.`roleId` = #{roleId} 
+		) AND s.`resourceType` = 'menu';
+	</select>  
+	
+	<!-- 删除角色的菜单权限，通过角色id，和菜单id-->
+	<delete id="deleteRoleMenu" parameterType="pageData">
+		DELETE 
+		FROM
+		  sysrolepermission 
+		where roleId = #{roleId} 
+		  and permissionId = #{permissionId}
+	</delete>
+	<!-- 保存角色的菜单权限。 -->
+	<insert id="saveRoleMenu" parameterType="pageData">
+		INSERT INTO sysrolepermission  (permissionId, roleId) VALUES (#{permissionId}, #{roleId})
+	</insert>
+	
+	<!--查出角色下的菜单id-->
+    <select id="listCrudPermissionByRoleId" resultType="pageData" parameterType="pageData">  
+       SELECT 
+       		s1.`id`,
+			s1.`permission` 
+		FROM
+		  sysrolepermission s 
+		  LEFT JOIN syspermission s1 
+		    ON s.`permissionId` = s1.`id` 
+		   WHERE s.`roleId` = #{roleId} AND s1.`permission` LIKE CONCAT('%:', #{permissionType})
+	</select>  
+		<!-- 删除角色的菜单下的增删改查权限，通过角色id，和权限标识符permission-->
+	<delete id="deleteRolePermissionByPermission" parameterType="pageData">
+		DELETE FROM sysrolepermission WHERE 
+			permissionId = (SELECT id FROM syspermission WHERE permission = #{permission})
+			and roleId = #{roleId}
+	</delete>
+		<!-- 保存角色菜单下的增删改查权.限，通过角色id，权限标识符。 -->
+	<insert id="saveRolePermissionByPermission" parameterType="pageData">
+		INSERT INTO sysrolepermission (permissionId, roleId) 
+			VALUES
+			  (
+			    (SELECT 
+			      id 
+			    FROM
+			      syspermission 
+			    WHERE permission = #{permission}),
+			    #{roleId}
+			  )
+	</insert>
+		
+	
+</mapper>  

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+    <head>
+         <title>网页的头部</title>
+    </head>
+    <body th:fragment="head">
+	  <div id="navbar" class="navbar navbar-default">
+			<script type="text/javascript">
+				try{ace.settings.check('navbar' , 'fixed');}catch(e){}
+			</script>
+
+			<div class="navbar-container" id="navbar-container">
+
+				<!-- /section:basics/sidebar.mobile.toggle -->
+				<div class="navbar-header pull-left" style="">
+					<!-- #section:basics/navbar.layout.brand -->
+					<a class="navbar-brand">
+						<small style="font-size: 24px;line-height:50px;height:50px;"> 
+<!-- 						<img alt="江西航天云网" src="static/images/jxcasicloud.png" style="height:50px;width:206px;"> -->
+						<img class="nav-user-photo" src="img/main/banner-udy-head.png" height="41px" width="60px" alt="欢迎使用" />
+						&nbsp;&nbsp;<span th:text="${application.SYSNAME}"></span>
+						 </small>
+					</a>
+
+					<!-- /section:basics/navbar.layout.brand -->
+
+					<!-- #section:basics/navbar.toggle -->
+
+					<!-- /section:basics/navbar.toggle -->
+				</div>
+
+				<!-- #section:basics/navbar.dropdown -->
+				<div class="navbar-buttons navbar-header pull-right" role="navigation"  style="line-height:50px;height:50px;">
+					<ul class="nav ace-nav">
+						<li class="grey">
+							<a data-toggle="dropdown" class="dropdown-toggle" href="#" th:text="${session.company_name}">
+							</a>
+						</li>
+
+						<!-- 	<ul class="dropdown-menu-right dropdown-navbar dropdown-menu dropdown-caret dropdown-close">
+								<li class="dropdown-header">
+									<i class="ace-icon fa fa-check"></i>
+									预留功能,待开发2
+								</li>
+								<li class="dropdown-footer">
+									<a href="javascript:">
+										预留功能,待开发
+										<i class="ace-icon fa fa-arrow-right"></i>
+									</a>
+								</li>
+							</ul>
+						</li>  -->
+
+						<li title="即时聊天" class="purple"  onclick="creatw();">
+							<a data-toggle="dropdown" class="dropdown-toggle" href="#">
+								<i class="ace-icon fa fa-bell icon-animated-bell"></i>
+								<span class="badge badge-important"></span>
+							</a>
+
+							<ul class="dropdown-menu-right dropdown-navbar navbar-pink dropdown-menu dropdown-caret dropdown-close">
+								<li class="dropdown-header">
+									<i class="ace-icon fa fa-bell-o"></i>
+									打开聊天窗口
+								</li>
+							</ul>
+						</li> 
+
+					 	<li title="站内信" class="green" onclick="fhsms();" id="fhsmstss">
+							<a data-toggle="dropdown" class="dropdown-toggle" href="#">
+								<i class="ace-icon fa fa-envelope icon-animated-vertical"></i>
+								<span class="badge badge-success" id="sitemailNum"></span>
+							</a>
+						</li>
+
+						<li class="light-blue" style="">
+							<a data-toggle="dropdown"  class="dropdown-toggle" href="#" >
+								<img class="nav-user-photo" src="plugins/ace/avatars/avatar6.png" alt="Jason's Photo" />
+								<span class="user-info" id="user_info" style="">
+									<small>Welcome</small> <span data-th-text="${session.user.name}">list.NAME</span>
+								</span>
+								<i class="ace-icon fa fa-caret-down"></i>
+							</a>
+
+							<ul class="user-menu dropdown-menu-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close">
+								<!-- <li>
+									<a onclick="editUserH();" style="cursor:pointer;"><i class="ace-icon fa fa-cog"></i>修改资料</a>editUserH()在 WebRoot\static\js\myjs\head.js中
+								</li> -->
+								<!-- <li id="systemset">
+									<a onclick="editSys();" style="cursor:pointer;"><i class="ace-icon fa fa-user"></i>系统设置</a>editSys()在 WebRoot\static\js\myjs\head.js中
+								</li>
+								<li class="divider"></li> -->
+								<li>
+									<a href="logout"><i class="ace-icon fa fa-power-off"></i>退出登录</a>
+								</li>
+							</ul>
+						</li>
+
+						<!-- /section:basics/navbar.user_menu -->
+					</ul>
+				</div>
+				<!-- /section:basics/navbar.dropdown -->
+			</div><!-- /.navbar-container -->
+		</div>
+		<div id="fhsmsobj"><!-- 站内信声音消息提示 --></div>
+	</body>
+</html>

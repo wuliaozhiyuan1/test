@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+      <head>
+		<link rel="stylesheet" th:href="@{/plugins/ace/css/chosen.css}" />
+		<meta th:replace="system/index/top :: top"/>
+	  </head>
+
+<body class="no-skin">
+	<div class="main-container" id="main-container">
+		<!-- /section:basics/sidebar -->
+		<div class="main-content">
+			<div class="main-content-inner">
+				<div class="page-content">
+					<div class="row">
+						<div class="col-xs-12">
+							<form
+								 name="form" id="form" method="post" th:action="@{/user/save.do}">
+								 <div id="zhongxin">
+								 	<table id="table_report" class="table table-striped table-bordered table-hover" style="margin-top:15px;">
+								 		<tr>
+								 			<td style="width:79px;text-align: right;padding-top: 13px;">角色:</td>
+											<td id="juese">
+												<select class="chosen-select form-control" name="roleId" id="roleId" data-placeholder="请选择角色" style="vertical-align:top;width:98%;" >
+													<option value=""></option>
+												</select>
+											</td>
+										</tr>
+										<tr>
+											<td style="width:79px;text-align: right;padding-top: 13px;">所属公司:</td>
+											<td id="comp">
+												<select class="chosen-select form-control" name="sysUser.company.id" id="companyId" data-placeholder="请选择所属公司" style="vertical-align:top;width:98%;">
+													<option value=""></option>
+												</select>
+											</td>
+										</tr>
+										<tr>
+											<td style="width:79px;text-align: right;padding-top: 13px;">用户名:</td>
+											<td>
+												<input type="text" name="sysUser.username" id="username" value="" maxlength="32" placeholder="这里输入用户名" title="用户名" style="width:98%;" required="required" onblur="hasU()"/>
+											</td>
+										</tr>
+										<tr>
+											<td style="width:79px;text-align: right;padding-top: 13px;">密码:</td>
+											<td>
+												<input type="password" name="sysUser.password" id="password"  maxlength="32" placeholder="输入密码" title="密码" style="width:98%;" required="required"/>
+											</td>
+										</tr>
+										<tr>
+											<td style="width:79px;text-align: right;padding-top: 13px;">确认密码:</td>
+											<td>
+												<input type="password" name="chkpwd" id="chkpwd"  maxlength="32" placeholder="确认密码" title="确认密码" style="width:98%;" required="required"/>
+											</td>
+										</tr>
+										<tr>
+											<td style="width:79px;text-align: right;padding-top: 13px;">姓名:</td>
+											<td>
+												<input type="text" name="sysUser.name" id="name"  maxlength="32" placeholder="这里输入姓名" title="姓名" style="width:98%;" required="required"/>
+											</td>
+										</tr>
+										<tr>
+											<td style="width:79px;text-align: right;padding-top: 13px;">手机号:</td>
+											<td>
+												<input type="number" name="sysUser.phone" id="phone"  value=""  maxlength="32" placeholder="这里输入手机号" title="手机号" style="width:98%;" required="required" phone="phone"/>
+												</td>
+										</tr>
+										<tr>
+											<td style="width:79px;text-align: right;padding-top: 13px;">邮箱:</td>
+											<td>
+												<input type="email" name="sysUser.email" id="email"  value="" maxlength="32" placeholder="这里输入邮箱" title="邮箱" onblur="hasE('')" style="width:98%;" required="required" email="email"/>
+											</td>
+										</tr>
+										<tr>
+											<td style="width:79px;text-align: right;padding-top: 13px;">备注:</td>
+											<td><input type="text" name="sysUser.remark" id="remark" placeholder="这里输入备注" maxlength="64" title="备注" style="width:98%;"/>
+											</td>
+										</tr>
+										<tr>
+											<td class="center" colspan="10">
+												<a class="btn btn-mini btn-primary" onclick="save();">保存</a>
+												<a class="btn btn-mini btn-danger" onclick="top.Dialog.close();">取消</a>
+											</td>
+										</tr>
+								 	</table>
+								 </div>
+								 <div id="zhongxin2" class="center" style="display:none">
+								 	<br/><br/><br/><br/><br/><img th:src="@{/img/jiazai.gif}" style="width: 50px;" /><br/><br/>
+								 	<h4 class="lighter block green">提交中...</h4>
+								 </div>
+							</form>
+							<div id="zhongxin2" class="center" style="display:none">
+							 	<img th:src="@{/img/jzx.gif}" style="width: 50px;" /><br/>
+							 	<h4 class="lighter block green"></h4>
+							 </div>
+						</div>
+					</div>
+					
+				
+				</div>
+			</div>
+		</div>
+		<!-- 返回顶部 -->
+		<a href="#" id="btn-scroll-up"
+			class="btn-scroll-up btn btn-sm btn-inverse"> <i
+			class="ace-icon fa fa-angle-double-up icon-only bigger-110"></i>
+		</a>
+	</div>
+	<div th:include="system/index/foot :: foot"></div>
+	<!--提示框-->
+	<script type="text/javascript" th:src="@{/plugins/jquery-tip/jquery.tips.js}"></script>
+	<!-- 下拉框 -->
+	<script th:src="@{/plugins/ace/js/chosen.jquery.js}"></script>
+	<script th:src="@{/plugins/validate/validate.js}"></script>
+	<!-- inline scripts related to this page -->
+	<script type="text/javascript" th:inline="javascript">
+	/*<![CDATA[*/
+		$(top.hangge());
+		//初始化表单数据
+		$(function(){
+			//查询角色，并且赋值给select
+			$.ajax({
+				type: "POST",
+				url: [[@{/}]] + 'role/listRole.do',
+		    	data: {},
+				dataType:'json',
+				cache: false,
+				success: function(data){
+					 if(data.success){
+						 for(var i = 0; i <data.data.length; i++){
+							 var $option = $("<option value='" + data.data[i].id + "'>" + data.data[i].name + "</option>");
+							 $("#roleId").append($option)
+						 }
+						 $('#roleId').chosen({ width: "98%"}); 
+					 }else{
+						 console.error("请求错误");
+						 console.error(data.msg);
+					 }
+				}
+			});
+			//查询登录用户下的所有企业，并且赋值给select
+			$.ajax({
+				type: "POST",
+				url: [[@{/}]] + 'company/listAllCompany.do',
+		    	data: {},
+				dataType:'json',
+				cache: false,
+				success: function(data){
+					 if(data.success){
+						 for(var i = 0; i <data.data.length; i++){
+							 var $option = $("<option value='" + data.data[i].id + "'>" + data.data[i].companyName + "</option>");
+							 $("#companyId").append($option)
+						 }
+						 $('#companyId').chosen({width: "98%"}); 
+						 
+					 }else{
+						 console.error("请求错误");
+						 console.error(data.msg);
+					 }
+				}
+			});
+		});
+		//保存
+		function save(){
+			var flag = validate();
+			if(!flag){
+				return;
+			}
+			if($("#password").val() != $("#chkpwd").val()){
+				 $("#chkpwd").tips({
+						side:3,
+			            msg:'密码和重复密码不一致',
+			            bg:'#AE81FF',
+			            time:3
+			        });
+					$("#chkpwd").focus();
+					return false;
+			}
+			$("#form").submit();
+			$("#zhongxin").hide();
+			$("#zhongxin2").show(); 
+		}
+		//判断用户名是否存在
+		function hasU(){
+			var username = $.trim($("#username").val());
+			$.ajax({
+				type: "POST",
+				url: [[@{/}]] + 'user/hasUsername.do',
+		    	data: {username:username},
+				dataType:'json',
+				cache: false,
+				success: function(data){
+					 if(true == data.success){
+						 return true;
+					 }else{
+						 $("#username").tips({
+								side:3,
+					            msg:'用户名已经存在',
+					            bg:'#AE81FF',
+					            time:3
+					        });
+							$("#username").focus();
+							return false;
+					 }
+				}
+			});
+		}
+		//判断邮箱是否存在
+		function hasE(USERNAME){
+			
+		}
+		
+		/*]]>*/
+	</script>
+</body>
+
+
+</html>

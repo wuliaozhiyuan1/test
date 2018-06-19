@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+    <head>
+    	
+    </head>
+    <body th:fragment="foot">
+	  <!--[if !IE]> -->
+		<script type="text/javascript" th:inline="javascript">
+			/*<![CDATA[*/
+				window.jQuery || document.write("<script src='" + [[@{/}]] + "plugins/ace/js/jquery.js'>"+"<"+"/script>");
+			/*]]>*/
+		</script>
+		<!-- <![endif]-->
+		<!--[if IE]>
+		<script type="text/javascript">
+		 window.jQuery || document.write("<script src='plugins/ace/js/jquery1x.js'>"+"<"+"/script>");
+		</script>
+		<![endif]-->
+		<script type="text/javascript" th:inline="javascript">
+			/*<![CDATA[*/
+				if('ontouchstart' in document.documentElement) document.write("<script src='" + [[@{/}]] + "plugins/ace/js/jquery.mobile.custom.js'>"+"<"+"/script>");
+			/*]]>*/
+		</script>
+		<script th:src="@{/plugins/ace/js/bootstrap.js}"></script>
+	</body>
+</html>

@@ -1,0 +1,30 @@
+.page{
+    width: 100%;
+    margin-top: 28px;
+    padding-bottom: 26px;
+}
+.page .page-list{
+margin: auto;
+    width: 60%;
+}
+.page>.page-list>span{
+    border: 1px solid #EAEAEA;
+    width: 28px;
+    height: 28px;
+    display: block;
+    float: left;
+    margin-left: 4px;
+    text-align: center;
+    line-height: 26px;
+    font-size: 12px;
+}
+.page>.page-list>span>a{
+width: 100%;
+    height: 100%;
+    display: block;
+
+}
+.page>.page-list>span.active{
+	 border: 1px solid #009AD6;
+   color: #009AD6;
+}

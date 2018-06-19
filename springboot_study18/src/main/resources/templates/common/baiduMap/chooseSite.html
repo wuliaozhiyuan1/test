@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+      <head>
+      	<style type="text/css" th:replace="system/index/top :: top"></style>
+		<style type="text/css">
+			body, html,#allmap {width: 100%;height: 100%;overflow: hidden;margin:0;font-family:"微软雅黑";}
+		</style>
+		<script src="http://api.map.baidu.com/api?v=2.0&amp;ak=560a8dbc8316e4a00f27950281c58bcd">
+		</script>
+	  </head>
+
+<body class="no-skin">
+	<input name="address" id="js-address" type="hidden"/>
+	<input name="longitude" id="js-longitude" type="hidden"/>
+    <input name="latitude" id="js-latitude" type="hidden"/>
+	<div id="r-result">
+		<input type="text" id="suggestId" size="20" value="百度" style="width:150px;" placeholder="请输入"/>
+	</div>
+	<div id="allmap"></div>
+	<div id="searchResultPanel" ></div>
+
+	<div th:include="system/index/foot :: foot">
+	</div>
+	<script type="text/javascript" th:inline="javascript">
+	/*<![CDATA[*/
+		$(document).ready(function(){
+			top.hangge();
+		});	
+		var gg_lat, gg_lon;
+		var bd_lat,bd_lon;
+		// 百度地图API功能
+		var map = new BMap.Map("allmap");
+		var point = new BMap.Point(115.9966,28.680981);
+		map.centerAndZoom(point,12);
+		var geoc = new BMap.Geocoder();
+		map.enableScrollWheelZoom();//开启鼠标滚轮缩放
+		map.enableInertialDragging();
+		map.enableContinuousZoom();
+		var size = new BMap.Size(10, 10);
+		map.addControl(new BMap.CityListControl({
+		    anchor: BMAP_ANCHOR_TOP_LEFT,
+		    offset: size,
+		}));
+		//
+		
+		var ac = new BMap.Autocomplete(    //建立一个自动完成的对象
+		{"input" : "suggestId"
+		,"location" : map
+		});
+
+		ac.addEventListener("onhighlight", function(e) {  //鼠标放在下拉列表上的事件
+		var str = "";
+			var _value = e.fromitem.value;
+			var value = "";
+			if (e.fromitem.index > -1) {
+				value = _value.province +  _value.city +  _value.district +  _value.street +  _value.business;
+			}    
+			str = "FromItem<br />index = " + e.fromitem.index + "<br />value = " + value;
+			
+			value = "";
+			if (e.toitem.index > -1) {
+				_value = e.toitem.value;
+				value = _value.province +  _value.city +  _value.district +  _value.street +  _value.business;
+			}    
+			str += "<br />ToItem<br />index = " + e.toitem.index + "<br />value = " + value;
+			$("#searchResultPanel").html(str);
+		});
+	
+		var myValue;
+		ac.addEventListener("onconfirm", function(e) {    //鼠标点击下拉列表后的事件
+		var _value = e.item.value;
+			myValue = _value.province +  _value.city +  _value.district +  _value.street +  _value.business;
+			$("#searchResultPanel").html("onconfirm<br />index = " + e.item.index + "<br />myValue = " + myValue);
+			
+			setPlace();
+		});
+	
+		function setPlace(){
+			map.clearOverlays();    //清除地图上所有覆盖物
+			function myFun(){
+				var pp = local.getResults().getPoi(0).point;    //获取第一个智能搜索的结果
+				map.centerAndZoom(pp, 18);
+				map.addOverlay(new BMap.Marker(pp));    //添加标注
+			}
+			var local = new BMap.LocalSearch(map, { //智能搜索
+			  onSearchComplete: myFun
+			});
+			local.search(myValue);
+		}
+		
+		//
+		//单击获取点击的经纬度
+		var address ;
+		map.addEventListener("click",function(e){
+			map.clearOverlays();
+			$('#js-longitude').val(e.point.lng);
+			$('#js-latitude').val(e.point.lat);		
+			var marker = new BMap.Marker(e.point);
+			map.addOverlay(marker);
+			geoc.getLocation(e.point, function(rs){
+				var addComp = rs.addressComponents;
+				address = addComp.province + " " + addComp.city + " " + addComp.district + " " + addComp.street + " " + addComp.streetNumber;
+				$('#js-address').val(addComp.province + addComp.city +  addComp.district + addComp.street + addComp.streetNumber);
+				address = address + "<br>" + e.point.lng + "," + e.point.lat ; 
+				if(address){
+					//address = address + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a onclick='top.Dialog.close();' class='btn btn-primary'>确定</a>";
+					var infoWindow = new BMap.InfoWindow(address);  // 创建信息窗口对象 
+					map.openInfoWindow(infoWindow,e.point); //开启信息窗口
+				}
+				
+			}); 
+		});
+		// 定义一个控件类,即function
+		function ZoomControl() {
+			// 默认停靠位置和偏移量
+			this.defaultAnchor = BMAP_ANCHOR_TOP_LEFT;
+			this.defaultOffset = new BMap.Size(100, 10);
+		}
+		// 通过JavaScript的prototype属性继承于BMap.Control
+		ZoomControl.prototype = new BMap.Control();
+		// 自定义控件必须实现自己的initialize方法,并且将控件的DOM元素返回
+		// 在本方法中创建个div元素作为控件的容器,并将其添加到地图容器中
+		ZoomControl.prototype.initialize = function(map) {
+			// 添加DOM元素到地图中
+			map.getContainer().appendChild($("#r-result")[0]);
+			// 将DOM元素返回
+			return $("#r-result")[0];
+		}
+		// 创建控件
+		var myZoomCtrl = new ZoomControl();
+		// 添加到地图当中
+		map.addControl(myZoomCtrl);
+	/*]]>*/
+	</script>
+	
+</body>
+
+
+</html>

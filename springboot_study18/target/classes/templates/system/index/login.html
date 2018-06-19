@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport"
+	content="height=device-height, width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=0" />
+<title th:text="${application.SYSNAME}" ></title>
+<link rel="stylesheet"
+	href="plugins/bootstrap-3.3.7-dist/css/bootstrap.css" />
+<script type="text/javascript" src="plugins/jquery/jquery-1.5.1.min.js"></script>
+<script type="text/javascript" src="plugins/jquery-tip/jquery.tips.js"></script>
+ 
+<style type="text/css">
+html, body {
+	padding: 0;
+	margin: 0;
+}
+
+.container {
+	padding: 0;
+}
+</style>
+<script th:inline="javascript">
+/*<![CDATA[*/
+	(function(doc, win) {
+	    var screenWidth = 0,root = doc.documentElement;
+	    /*
+	    先只适配小屏和中屏，大屏也当中屏处理
+	    var size = 'M', 
+	    **/
+	    var size = 'L';
+	    if (window.screen && screen.width) {
+	        screenWidth = screen.width;
+	        if (screenWidth > 1920) {
+	            // 超大屏，例如iMac
+	            size = 'L';
+	        } else if (screenWidth < 480) {
+	            // 小屏，如手机
+	            size = 'S';
+	        }
+	    }
+	    // 标记CSS
+	    root.className = size;
+	    // 标记JS
+	    win.SIZE = size;        
+	})(document, window);
+/*]]>*/
+</script>
+<link rel="stylesheet" href="css/login.css" />
+
+</head>
+
+<body class="body">
+	<div class="background1">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-1 col-xs-1 col-xs-push-8 col-md-push-10"
+					style="padding: 0">
+					<span class="top1"
+						style="color: rgb(255, 255, 255); font-size: 1vw;"><span
+						class="glyphicon glyphicon-user"></span> 注册</span>
+				</div>
+				<div class="col-md-1 col-xs-1 col-xs-push-8 col-md-push-10"
+					style="padding: 0">
+					<span class="top1"
+						style="color: rgb(255, 255, 255); font-size: 1vw;"><span
+						class="glyphicon glyphicon-home"></span> 首页</span>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-5 col-xs-push-6 centDiv"
+					style="border: 1px solid #ccc;">
+					<div class="row">
+						<div class="col-xs-12" style="">
+							<img alt="" src="img/login/LOGO4.png" class="logo"
+								style="width: 100%" />
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-xs-12">
+							<form role="form" action="" method="post">
+								<div class="form-group form-group-top" style="margin-top: 1vw;">
+									<div class="input-group input-group-sm">
+										<span class="input-group-addon"
+											style="line-height: 0.1vw; height: 0.1vw; color: rgb(255, 255, 255); background-color: #28B779">
+											<span class="glyphicon glyphicon-user"
+											style="line-height: 0.1vw; height: 0.1vw"></span>
+										</span> <input type="text" name="username" id="loginname" class="form-control sm-input"
+											placeholder="请输入账号" />
+									</div>
+								</div>
+								<div class="form-group" style="">
+									<div class="input-group input-group-sm">
+										<span class="input-group-addon"
+											style="line-height: 0.1vw; height: 0.1vw; color: rgb(255, 255, 255); background-color: #28B779">
+											<span class="glyphicon glyphicon-lock"
+											style="line-height: 0.1vw; height: 0.1vw"></span>
+										</span> <input type="password" name="password" id="password" class="form-control sm-input"
+											placeholder="请输入密码" />
+									</div>
+								</div>
+								<div class="form-group forget" style="font-size: 2vh;">
+									<div class="row">
+										<div class="col-xs-6" style="padding-right: 0">
+											<a href="http://www.baidu.com">忘记密码?</a>
+										</div>
+										<div class="col-xs-6" style="padding-left: 0; height: 4vh;">
+											<label class="checkbox-inline"><input type="checkbox" name="rememberMe" class="remender"/>记住我
+											</label>
+										</div>
+									</div>
+								</div>
+								<div class="form-group">
+									<div class="row">
+										<div class="col-xs-12">
+											<div class="input-group input-group-sm">
+												<img src="img/login/yan.png" class="yan"
+													style="float: left;" /> <img style="float: left;"
+													id="codeImg" alt="点击更换" title="点击更换" src="" class="yan" />
+												<!-- <input type="text" class="form-control sm-input code" placeholder="验证码" 
+										            	style="float:left;"/> -->
+												<input type="text" name="code" id="code" class="form-control sm-input codeInput"
+													placeholder="请输入验证码" style="margin-left: 2vw; float: left;" />
+											</div>
+										</div>
+
+									</div>
+								</div>
+								<div class="form-group">
+									<div class="row" style="text-align: center">
+										<input type="submit" value="登录" class="btn btn-info" style="font-size: 0.7vw; padding: 0vw; background-color: #28B779; margin-right: 2vw; width: 7vw"/>
+										<!-- <button type="button" onclick="onsubmitClick();"
+											class="btn btn-info"
+											style="font-size: 0.7vw; padding: 0vw; background-color: #28B779; margin-right: 2vw; width: 7vw">登录</button> -->
+										<button type="button" class="btn btn-info"
+											style="font-size: 0.7vw; padding: 0vw; background-color: #28B779; width: 7vw">重置</button>
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+			-->
+			<div class="row">
+				<div class="row"
+					style="color: white; text-align: center; width: 100%; margin-top: 4vh; font-size: 0.8vw">
+					<div>
+						<span>友情链接：</span> <a href="http://www.jxhtyw.com" target="_blank"
+							style="color: white;">江西航天云网</a> <a style="color: white;"
+							href="http://www.ganbangwang.com" target="_blank">赣邦网</a>&nbsp; <a
+							style="color: white;" href="http://kj.casicloud.com/index.html"
+							target="_blank">南康康居网</a> <a style="color: white;"
+							href="http://www.casic.com.cn/" target="_blank">中国航天科工集团</a>
+					</div>
+					<div>Copyright ©2015-2017 www.jxhtyw.com, All Rights Reserved
+					</div>
+					<div>江西航天云网科技有限公司 版权所有 赣ICP备16001899号</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+<!-- loginJs -->
+<script type="text/javascript" src="js/system/login.js"></script>
+
+</html>

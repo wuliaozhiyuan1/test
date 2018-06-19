@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<!DOCTYPE mapper  
+       PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+       "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+<mapper namespace="com.wuliaozhiyuan.mapper.system.LogMapper">  
+
+	<!--表名 -->
+	<sql id="tableName">
+		log
+	</sql>
+     <!-- 新增-->
+	<insert id="save" parameterType="pageData">
+		insert into 
+	<include refid="tableName"></include>
+		(name, username, userid, logContent, createTime, ip) 
+		values (
+			#{name},#{username},#{userid},#{logContent}, #{createTime,jdbcType=TIMESTAMP}, #{ip}	
+		)
+	</insert>
+  
+	
+</mapper>  

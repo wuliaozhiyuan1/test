@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport"
+	content="height=device-height, width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=0" />
+	<script type="text/javascript" src="plugins/jquery/jquery-1.7.2.js"></script>
+	<script type="text/javascript" src="plugins/tab/js/framework.js"></script>
+	<link href="plugins/tab/css/import_basic.css" rel="stylesheet" type="text/css"/>
+	<link  rel="stylesheet" type="text/css" id="skin" prePath="plugins/tab/" />
+	<script type="text/javascript" charset="utf-8" src="plugins/tab/js/tab.js"></script>
+
+</head>
+
+<body class="body">
+	<div id="tab_menu"></div>
+	<div style="width:100%;">
+		<div id="page" style="width:100%;height:100%;"></div>
+	</div>
+</body>
+<script th:inline="javascript">
+/*<![CDATA[*/
+	function tabAddHandler(mid,mtitle,murl){
+	tab.update({
+		id :mid,
+		title :mtitle,
+		url :murl,
+		isClosed :true
+	});
+	tab.add({
+		id :mid,
+		title :mtitle,
+		url :murl,
+		isClosed :true
+	});
+
+	tab.activate(mid);
+}
+ var tab;	
+$( function() {
+	 tab = new TabView( {
+		containerId :'tab_menu',
+		pageid :'page',
+		cid :'tab1',
+		position :"top"
+	});
+	tab.add( {
+		id :'tab1_index1',
+		title :"首页",
+		url :"index_default",
+		isClosed :false
+	});
+});
+	//当改变窗口大小的时候，出发这个函数，自适应高度
+	function cmainFrameT(){
+		var hmainT = document.getElementById("page");
+		var bheightT = document.documentElement.clientHeight;
+		hmainT .style.width = '100%';
+		hmainT .style.height = (bheightT  - 41) + 'px';
+	}
+	cmainFrameT();
+	window.onresize=function(){  
+		cmainFrameT();
+	};
+/*]]>*/
+</script>
+
+</html>
