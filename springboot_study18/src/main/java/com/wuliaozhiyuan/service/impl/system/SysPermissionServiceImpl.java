@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.wuliaozhiyuan.bean.shiro.SysPermission;
+import com.wuliaozhiyuan.config.datasouce.dynamic.TargetDataSource;
 import com.wuliaozhiyuan.dao.base.Dao;
 import com.wuliaozhiyuan.jpa.repository.SysPermissionRepository;
 import com.wuliaozhiyuan.mapper.system.SysPermissionMapper;
@@ -37,6 +38,7 @@ public class SysPermissionServiceImpl implements SysPermissionService{
 	 * @return
 	 */
 	@Override
+	@TargetDataSource("ds1")
 	public List<SysPermission> listSysPermissionByUserId(PageData pd){
 		return sysPermissionMapper.listPermissionByUserId(pd);
 	}
@@ -45,6 +47,7 @@ public class SysPermissionServiceImpl implements SysPermissionService{
 	 * @param uid
 	 * @return
 	 */
+	@TargetDataSource("ds1")
 	@Override
 	public List<SysPermission> listSysPermissionByParentId(PageData pd){
 		return sysPermissionMapper.listPermissionByParentId(pd);
@@ -56,6 +59,7 @@ public class SysPermissionServiceImpl implements SysPermissionService{
 	 * @return
 	 */
 	@Override
+	@TargetDataSource("ds1")
 	public SysPermission getSysPermissionById(long id){
 		return sysPermissionMapper.getSysPermissionById(id);
 	}
@@ -63,6 +67,7 @@ public class SysPermissionServiceImpl implements SysPermissionService{
 	 * 保存
 	 * @param sysPermission
 	 */
+	@TargetDataSource("ds1")
 	@Override
 	public void saveSysPermission(PageData pageData){
 		SysPermission sysPermission = (SysPermission)pageData.get("sysPermission");

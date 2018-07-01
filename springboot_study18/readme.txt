@@ -1,6 +1,16 @@
-﻿					springbboot跟着iteye教程走的。iteye教程再位置笔记中
-18、	一、这里写了一个udy的移动端和web端都适配的login网页。
-	二、这是使用thymleaf,freemarker
-	
+﻿					springbboot跟着iteye教程走的。iteye教程在为知笔记中
+	一、这是基于spring boot的udy基础框架。
+	二、1、前台jsp改成thymeleft，前台登录页改成自适应各个分辨率，手机端。
+	2、spring boot集成aop统一的的切面事务。
+	3、用jsr303做服务端校验以及aop对参数异常的的统一处理。
+	4、mybatiss做数据交互。
+	5、封装了mybatis的批量处理。
+	6、用aop做流程日志记录。
+	7、用shiro做权限管理（包括，角色管理，权限管理，访问控制，echar做缓存）。
+	8、websocket的即时通信, 站内邮件。
+	9、mybatis的分页插件。aop做异常处理（请求json的时候，报错返回json，请求页面的时候，报错返回页面）。
+	10、一些核心基本业务，字典维护，企业维护等。
+	11、主库和从库的动态切换。读从，写主。
+	12、字典那部分，集成了redis缓存。增加从库和缓存都可以扩张读的性能，增加从库相对于增加缓存要简单，增加缓存增加了业务复杂度。具体还是看业务。
 	
 	

@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.wuliaozhiyuan.bean.shiro.SysRole;
+import com.wuliaozhiyuan.config.datasouce.dynamic.TargetDataSource;
 import com.wuliaozhiyuan.dao.base.Dao;
 import com.wuliaozhiyuan.mapper.system.SysRoleMapper;
 import com.wuliaozhiyuan.service.system.SysRoleService;
@@ -34,6 +35,7 @@ public class SysRoleServiceImpl implements SysRoleService{
 	 * @return
 	 */
 	@Override
+	@TargetDataSource("ds1")
 	public List<SysRole> listRole(){
 		return sysRoleMapper.listRole();
 	}
@@ -48,6 +50,7 @@ public class SysRoleServiceImpl implements SysRoleService{
 	 * @param pd
 	 * @return
 	 */
+	@TargetDataSource("ds1")
 	@Override
 	public SysRole getRoleById(PageData pd){
 		return sysRoleMapper.getRoleById(pd.getLong("id"));
@@ -85,6 +88,7 @@ public class SysRoleServiceImpl implements SysRoleService{
 	 * @param pd {}
 	 * @return
 	 */
+	@TargetDataSource("ds1")
 	@Override
 	public List<PageData> listMenu(Long roleId) {
 		List<PageData> listMenu = sysRoleMapper.listMenu();
@@ -165,6 +169,7 @@ public class SysRoleServiceImpl implements SysRoleService{
 	 * @return
 	 */
 	@Override
+	@TargetDataSource("ds1")
 	public List<PageData> listCrudPermission(Long roleId, String type) {
 		//查出指定的类型的所有权限，然后判定这个权限的标识符的前缀是否和菜单前缀一致
 		PageData pageData = PageData.getCommanInstance(2);

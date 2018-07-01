@@ -7,11 +7,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import com.alibaba.fastjson.JSON;
 import com.wuliaozhiyuan.bean.system.Company;
+import com.wuliaozhiyuan.config.datasouce.dynamic.TargetDataSource;
 import com.wuliaozhiyuan.mapper.system.CompanyMapper;
 import com.wuliaozhiyuan.service.system.CompanyService;
 import com.wuliaozhiyuan.util.Page;
 import com.wuliaozhiyuan.util.PageData;
+import com.wuliaozhiyuan.util.RedisService;
 import com.wuliaozhiyuan.util.Tools;
 /**
  * 企业Service
@@ -23,6 +26,10 @@ public class CompanyServiceImpl implements CompanyService {
 	
 	@Autowired
 	private CompanyMapper companyMapper;
+	
+	@Autowired
+    RedisService redisService;
+
 	/**
 	 * 获得子企业，通过父企业id。返回格式为一个ztree需要的格式
 	 * @param pd
@@ -36,6 +43,7 @@ public class CompanyServiceImpl implements CompanyService {
 	 * @throws IllegalAccessException 
 	 * @throws IllegalArgumentException 
 	 */
+	@TargetDataSource("ds1")
 	@Override
 	public List<PageData> getSubCompanpy(PageData pd) throws Exception{
 		String idParam = "id";
@@ -45,7 +53,15 @@ public class CompanyServiceImpl implements CompanyService {
 		}else{
 			pd.put(parentIdParam, pd.getLong(idParam));
 		}
-		List<Company> companyList = companyMapper.listCompanyByParentId(pd);
+		//缓存
+		String parentId = pd.getString("parentId");
+		String companyListStr = redisService.getStr("company:parentId:" + parentId);
+		List<Company> companyList;
+		if(!StringUtils.isEmpty(companyListStr)){
+			companyList = JSON.parseArray(companyListStr, Company.class);
+		}else{
+			companyList = companyMapper.listCompanyByParentId(pd);
+		}
 		List<PageData> resultList = new ArrayList<PageData>(companyList.size());
 		for(Company company : companyList){
 			PageData pageData = PageData.getCommanInstance(10);
@@ -74,6 +90,7 @@ public class CompanyServiceImpl implements CompanyService {
 	 * }
 	 * @return
 	 */
+	@TargetDataSource("ds1")
 	@Override
 	public List<Company> listCompany(Page page) {
 		PageData pd = page.getPd();
@@ -90,6 +107,7 @@ public class CompanyServiceImpl implements CompanyService {
 	 * @author shuyy
 	 * @date 2017年11月26日
 	 */
+	@TargetDataSource("ds1")
 	@Override
 	public List<Company> companyList(String currentCompanyTreePath){
 		return companyMapper.companyList(currentCompanyTreePath);
@@ -102,6 +120,7 @@ public class CompanyServiceImpl implements CompanyService {
 	 * @author shuyy
 	 * @date 2017年12月7日
 	 */
+	@TargetDataSource("ds1")
 	@Override
 	public Company getCompany(Long id){
 		return companyMapper.getCompany(id);

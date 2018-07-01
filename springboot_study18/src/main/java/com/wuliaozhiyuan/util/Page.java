@@ -89,9 +89,12 @@ public class Page {
 		if(currentPage<=0){
 			currentPage = 1;
 		}
+		/*if(currentPage<=0){
+			currentPage = 1;
+		}
 		if(currentPage>getTotalPage()){
 			currentPage = getTotalPage();
-		}
+		}*/
 		return currentPage;
 	}
 	
@@ -166,9 +169,9 @@ public class Page {
 			sb.append(" top.jzts();");
 			sb.append("	if(true && document.forms[0]){\n");
 			sb.append("		var url = document.forms[0].getAttribute(\"action\");\n");
-			sb.append("		if(url.indexOf('?')>-1){url += \"&"+(entityOrField?"currentPage":"page.currentPage")+"=\";}\n");
-			sb.append("		else{url += \"?"+(entityOrField?"currentPage":"page.currentPage")+"=\";}\n");
-			sb.append("		url = url + page + \"&" +(entityOrField?"showCount":"page.showCount")+"="+showCount+"\";\n");
+			sb.append("		if(url.indexOf('?')>-1){url += \"&"+(entityOrField?"currentPage":"currentPage")+"=\";}\n");
+			sb.append("		else{url += \"?"+(entityOrField?"currentPage":"currentPage")+"=\";}\n");
+			sb.append("		url = url + page + \"&" +(entityOrField?"showCount":"showCount")+"="+showCount+"\";\n");
 			sb.append("		document.forms[0].action = url;\n");
 			sb.append("		document.forms[0].submit();\n");
 			sb.append("	}else{\n");
@@ -178,10 +181,10 @@ public class Page {
 			sb.append("				var reg = /currentPage=\\d*/g;\n");
 			sb.append("				url = url.replace(reg,'currentPage=');\n");
 			sb.append("			}else{\n");
-			sb.append("				url += \"&"+(entityOrField?"currentPage":"page.currentPage")+"=\";\n");
+			sb.append("				url += \"&"+(entityOrField?"currentPage":"currentPage")+"=\";\n");
 			sb.append("			}\n");
-			sb.append("		}else{url += \"?"+(entityOrField?"currentPage":"page.currentPage")+"=\";}\n");
-			sb.append("		url = url + page + \"&" +(entityOrField?"showCount":"page.showCount")+"="+showCount+"\";\n");
+			sb.append("		}else{url += \"?"+(entityOrField?"currentPage":"currentPage")+"=\";}\n");
+			sb.append("		url = url + page + \"&" +(entityOrField?"showCount":"showCount")+"="+showCount+"\";\n");
 			sb.append("		document.location = url;\n");
 			sb.append("	}\n");
 			sb.append("}\n");
@@ -191,9 +194,9 @@ public class Page {
 			sb.append(" top.jzts();");
 			sb.append("	if(true && document.forms[0]){\n");
 			sb.append("		var url = document.forms[0].getAttribute(\"action\");\n");
-			sb.append("		if(url.indexOf('?')>-1){url += \"&"+(entityOrField?"currentPage":"page.currentPage")+"=\";}\n");
-			sb.append("		else{url += \"?"+(entityOrField?"currentPage":"page.currentPage")+"=\";}\n");
-			sb.append("		url = url + \"1&" +(entityOrField?"showCount":"page.showCount")+"=\"+value;\n");
+			sb.append("		if(url.indexOf('?')>-1){url += \"&"+(entityOrField?"currentPage":"currentPage")+"=\";}\n");
+			sb.append("		else{url += \"?"+(entityOrField?"currentPage":"currentPage")+"=\";}\n");
+			sb.append("		url = url + \"1&" +(entityOrField?"showCount":"showCount")+"=\"+value;\n");
 			sb.append("		document.forms[0].action = url;\n");
 			sb.append("		document.forms[0].submit();\n");
 			sb.append("	}else{\n");
@@ -203,10 +206,10 @@ public class Page {
 			sb.append("				var reg = /currentPage=\\d*/g;\n");
 			sb.append("				url = url.replace(reg,'currentPage=');\n");
 			sb.append("			}else{\n");
-			sb.append("				url += \"1&"+(entityOrField?"currentPage":"page.currentPage")+"=\";\n");
+			sb.append("				url += \"1&"+(entityOrField?"currentPage":"currentPage")+"=\";\n");
 			sb.append("			}\n");
-			sb.append("		}else{url += \"?"+(entityOrField?"currentPage":"page.currentPage")+"=\";}\n");
-			sb.append("		url = url + \"&" +(entityOrField?"showCount":"page.showCount")+"=\"+value;\n");
+			sb.append("		}else{url += \"?"+(entityOrField?"currentPage":"currentPage")+"=\";}\n");
+			sb.append("		url = url + \"&" +(entityOrField?"showCount":"showCount")+"=\"+value;\n");
 			sb.append("		document.location = url;\n");
 			sb.append("	}\n");
 			sb.append("}\n");
@@ -293,9 +296,9 @@ public class Page {
 			sb.append(" top.jzts();");
 			sb.append("	if(true && document.forms[1]){\n");
 			sb.append("		var url = document.forms[1].getAttribute(\"action\");\n");
-			sb.append("		if(url.indexOf('?')>-1){url += \"&"+(entityOrField?"currentPage":"page.currentPage")+"=\";}\n");
-			sb.append("		else{url += \"?"+(entityOrField?"currentPage":"page.currentPage")+"=\";}\n");
-			sb.append("		url = url + page + \"&" +(entityOrField?"showCount":"page.showCount")+"="+showCount+"\";\n");
+			sb.append("		if(url.indexOf('?')>-1){url += \"&"+(entityOrField?"currentPage":"currentPage")+"=\";}\n");
+			sb.append("		else{url += \"?"+(entityOrField?"currentPage":"currentPage")+"=\";}\n");
+			sb.append("		url = url + page + \"&" +(entityOrField?"showCount":"showCount")+"="+showCount+"\";\n");
 			sb.append("		document.forms[1].action = url;\n");
 			sb.append("		document.forms[1].submit();\n");
 			sb.append("	}else{\n");
@@ -305,10 +308,10 @@ public class Page {
 			sb.append("				var reg = /currentPage=\\d*/g;\n");
 			sb.append("				url = url.replace(reg,'currentPage=');\n");
 			sb.append("			}else{\n");
-			sb.append("				url += \"&"+(entityOrField?"currentPage":"page.currentPage")+"=\";\n");
+			sb.append("				url += \"&"+(entityOrField?"currentPage":"currentPage")+"=\";\n");
 			sb.append("			}\n");
-			sb.append("		}else{url += \"?"+(entityOrField?"currentPage":"page.currentPage")+"=\";}\n");
-			sb.append("		url = url + page + \"&" +(entityOrField?"showCount":"page.showCount")+"="+showCount+"\";\n");
+			sb.append("		}else{url += \"?"+(entityOrField?"currentPage":"currentPage")+"=\";}\n");
+			sb.append("		url = url + page + \"&" +(entityOrField?"showCount":"showCount")+"="+showCount+"\";\n");
 			sb.append("		document.location = url;\n");
 			sb.append("	}\n");
 			sb.append("}\n");
@@ -318,9 +321,9 @@ public class Page {
 			sb.append(" top.jzts();");
 			sb.append("	if(true && document.forms[1]){\n");
 			sb.append("		var url = document.forms[1].getAttribute(\"action\");\n");
-			sb.append("		if(url.indexOf('?')>-1){url += \"&"+(entityOrField?"currentPage":"page.currentPage")+"=\";}\n");
-			sb.append("		else{url += \"?"+(entityOrField?"currentPage":"page.currentPage")+"=\";}\n");
-			sb.append("		url = url + \"1&" +(entityOrField?"showCount":"page.showCount")+"=\"+value;\n");
+			sb.append("		if(url.indexOf('?')>-1){url += \"&"+(entityOrField?"currentPage":"currentPage")+"=\";}\n");
+			sb.append("		else{url += \"?"+(entityOrField?"currentPage":"currentPage")+"=\";}\n");
+			sb.append("		url = url + \"1&" +(entityOrField?"showCount":"showCount")+"=\"+value;\n");
 			sb.append("		document.forms[1].action = url;\n");
 			sb.append("		document.forms[1].submit();\n");
 			sb.append("	}else{\n");
@@ -330,10 +333,10 @@ public class Page {
 			sb.append("				var reg = /currentPage=\\d*/g;\n");
 			sb.append("				url = url.replace(reg,'currentPage=');\n");
 			sb.append("			}else{\n");
-			sb.append("				url += \"1&"+(entityOrField?"currentPage":"page.currentPage")+"=\";\n");
+			sb.append("				url += \"1&"+(entityOrField?"currentPage":"currentPage")+"=\";\n");
 			sb.append("			}\n");
-			sb.append("		}else{url += \"?"+(entityOrField?"currentPage":"page.currentPage")+"=\";}\n");
-			sb.append("		url = url + \"&" +(entityOrField?"showCount":"page.showCount")+"=\"+value;\n");
+			sb.append("		}else{url += \"?"+(entityOrField?"currentPage":"currentPage")+"=\";}\n");
+			sb.append("		url = url + \"&" +(entityOrField?"showCount":"showCount")+"=\"+value;\n");
 			sb.append("		document.location = url;\n");
 			sb.append("	}\n");
 			sb.append("}\n");

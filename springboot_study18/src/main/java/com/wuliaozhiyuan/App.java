@@ -7,11 +7,13 @@ import org.springframework.boot.autoconfigure.web.HttpMessageConverters;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.converter.HttpMessageConverter;
 
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.alibaba.fastjson.support.config.FastJsonConfig;
 import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
+import com.wuliaozhiyuan.config.datasouce.dynamic.DynamicDataSourceRegister;
 import com.wuliaozhiyuan.config.system.SystemSetting;
 import com.wuliaozhiyuan.config.system.WebSocketSetting;
 
@@ -24,6 +26,7 @@ import com.wuliaozhiyuan.config.system.WebSocketSetting;
 @ServletComponentScan//这个就是扫描相应的Servlet包;
 @EnableConfigurationProperties({SystemSetting.class, WebSocketSetting.class})  
 @MapperScan("com.wuliaozhiyuan.mapper")  
+@Import({DynamicDataSourceRegister.class})
 public class App {
 	/**配置httpMessageConverters，通过fastJson*/
 	@Bean

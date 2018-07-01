@@ -89,8 +89,15 @@
 	        <groupId>websocket</groupId>  
 	        <artifactId>websocket</artifactId>  
 	        <version>1.0</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/src/main/resources/lib/websocket-1.0.jar</systemPath>
 	    </dependency>  
-			    
+		
+		 <!-- 添加redis支持-->  
+       <dependency>  
+            <groupId>org.springframework.boot</groupId>  
+            <artifactId>spring-boot-starter-redis</artifactId>  
+        </dependency>  	    
 		
 		<!-- 热部署插件 -->
 		<dependency>

@@ -16,8 +16,13 @@
         d.`name`, 
         d.code,
         d.remark, 
+        d.englishName,
         d.orders, 
-        d.isParent 
+        d.isParent,
+        d.orders,
+        d.parentId,
+        d.treePath,
+        d.parentCode
         FROM dictionary d 
         WHERE d.`parentId` = #{parentId} order by d.orders
 	</select>  

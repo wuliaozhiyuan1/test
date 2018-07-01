@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.wuliaozhiyuan.bean.shiro.SysUser;
 import com.wuliaozhiyuan.bean.system.SysUserRole;
 import com.wuliaozhiyuan.bean.system.vo.SysUserVo;
+import com.wuliaozhiyuan.config.datasouce.dynamic.TargetDataSource;
 import com.wuliaozhiyuan.jpa.repository.SysUserRepository;
 import com.wuliaozhiyuan.mapper.system.SysUserMapper;
 import com.wuliaozhiyuan.service.system.SysUserRoleService;
@@ -39,6 +40,7 @@ public class SysUserServiceImpl implements SysUserService {
      *  @return
      */
 	@Override
+	@TargetDataSource("ds1")
 	public SysUser findByUsername(String username) {
 		return sysUserRepository.findByUsername(username);
 	}
@@ -47,6 +49,7 @@ public class SysUserServiceImpl implements SysUserService {
 	 * @return
 	 * @throws Exception
 	 */
+	@TargetDataSource("ds1")
 	@Override
 	public List<PageData> listUser(Page page) throws Exception {
 		return sysUserMapper.userListPage(page);
@@ -58,6 +61,7 @@ public class SysUserServiceImpl implements SysUserService {
 	 * @author shuyy
 	 * @date 2017年12月7日
 	 */
+	@TargetDataSource("ds1")
 	@Override
 	public Integer hasUsername(String username) {
 		return sysUserMapper.hasUsername(username);

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.wuliaozhiyuan.bean.system.Sitemail;
+import com.wuliaozhiyuan.config.datasouce.dynamic.TargetDataSource;
 import com.wuliaozhiyuan.mapper.system.SitemailMapper;
 import com.wuliaozhiyuan.service.system.SitemailService;
 import com.wuliaozhiyuan.util.Page;
@@ -30,6 +31,7 @@ public class SitemailServiceImpl implements SitemailService {
 	 * @return
 	 */
 	@Override
+	@TargetDataSource("ds1")
 	public Integer totalNumByStatus(PageData pageData) {
 		return sitemailMapper.totalNumByStatus(pageData);
 	}
@@ -41,6 +43,7 @@ public class SitemailServiceImpl implements SitemailService {
 	 * @date 2017年12月3日
 	 */
 	@Override
+	@TargetDataSource("ds1")
 	public List<Sitemail> sitemailLIstPage(Page page) {
 		PageData pd = page.getPd();
 		String type = pd.getString("type");
